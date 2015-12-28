@@ -28,6 +28,7 @@
 *.app
 
 app
+*.pro.user
 
 # OS X
 .DS_Store
