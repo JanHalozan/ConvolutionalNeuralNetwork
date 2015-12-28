@@ -1,8 +1,22 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-class Neuron
+#include <vector>
+
+namespace sf
 {
+    class Neuron;
+}
+
+class sf::Neuron
+{
+private:
+    std::vector<double> weights;
+
+    double threshold;
+    
+
+
 public:
     Neuron();
 };

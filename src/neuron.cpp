@@ -1,5 +1,6 @@
 #include "neuron.h"
 
-Neuron::Neuron()
+sf::Neuron::Neuron()
 {
+
 }
