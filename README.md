@@ -6,4 +6,4 @@ A neural net for classifying images.
 
 ####Usage
 
-I'm currently developing with Qt creator so it's probably best to build with Qt creator. It's not dependent on the `qt` library though. I will fix the Makefile to work when it's finished.
+Open it up using Xcode. It should run without any problems. I'll prepare a Makefile when it's finished.

@@ -14,7 +14,6 @@ private:
     std::vector<double> weights;
 
     double threshold;
-    
 
 
 public:

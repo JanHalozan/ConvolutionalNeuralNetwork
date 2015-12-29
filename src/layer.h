@@ -1,10 +1,12 @@
 #ifndef LAYER_H
 #define LAYER_H
 
+#include "helpers.h"
+
 namespace sf
 {
     class Layer;
-
+    
     typedef enum
     {
         kLayerTypeConvolutional = 1,
@@ -17,24 +19,24 @@ class sf::Layer
 {
 protected:
     sf::LayerType type;
-
+    
     unsigned short inputWidth;
     unsigned short inputHeight;
-
+    
     unsigned short outputWidth;
     unsigned short outputHeight;
-
-    double **input;
-    double **output;
-
+    
+    double *input;
+    double *output;
+    
 public:
     Layer();
-
+    
     sf::LayerType getType();
-
-    void loadInput(double **input, unsigned short width, unsigned short height);
+    
+    void loadInput(double *input, unsigned short width, unsigned short height);
     virtual void calculateOutput() = 0;
-    virtual double **getOutput(int &width, int &height) = 0;
+    virtual double *getOutput(int &width, int &height) = 0;
 };
 
 #endif // LAYER_H
