@@ -1,5 +1,13 @@
-#ifndef NEURON_H
-#define NEURON_H
+//
+//  neuron.h
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
+#ifndef neuron_h
+#define neuron_h
 
 #include <vector>
 #include <cstdlib>
@@ -36,4 +44,4 @@ public:
     double getGradient();
 };
 
-#endif // NEURON_H
+#endif /* neuron_h */

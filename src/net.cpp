@@ -1,3 +1,11 @@
+//
+//  net.cpp
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
 #include "net.h"
 
 unsigned long sf::Net::inputDataWidth = 5;
@@ -12,9 +20,9 @@ void sf::Net::addLayer(sf::Layer *layer)
     this->layers.push_back(layer);
 }
 
-void sf::Net::addTrainingSample(double *data)
+void sf::Net::addTrainingSample(double *sample)
 {
-    this->trainingSamples.push_back(data);
+    this->trainingSamples.push_back(sample);
 }
 
 void sf::Net::train()
@@ -22,18 +30,23 @@ void sf::Net::train()
     
 }
 
-double *sf::Net::classifySample(double *data)
+double *sf::Net::classifySample(double *sample)
 {
-    double *input = data;
+    return this->calculateNetOutput(sample);
+}
+
+double *sf::Net::calculateNetOutput(double *sample)
+{
+    double *data = sample;
     unsigned long width = this->inputDataWidth;
     unsigned long height = this->inputDataHeight;
     
     for (sf::Layer *layer : this->layers)
     {
-        layer->loadInput(input, width, height);
+        layer->loadInput(data, width, height);
         layer->calculateOutput();
-        input = layer->getOutput(width, height);
+        data = layer->getOutput(width, height);
     }
     
-    return NULL;
+    return data;
 }

@@ -1,5 +1,13 @@
-#ifndef LAYER_H
-#define LAYER_H
+//
+//  layer.h
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
+#ifndef layer_h
+#define layer_h
 
 #include "helpers.h"
 
@@ -11,7 +19,8 @@ namespace sf
     {
         kLayerTypeConvolutional = 1,
         kLayerTypePooling = 2,
-        kLayerTypeNeural = 3
+        kLayerTypeHiddenNeuron = 3,
+        kLayerTypeOutputNeuron = 4
     } LayerType;
 }
 
@@ -39,4 +48,4 @@ public:
     virtual double *getOutput(unsigned long &width, unsigned long &height) = 0;
 };
 
-#endif // LAYER_H
+#endif /* layer_h */

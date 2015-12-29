@@ -1,5 +1,13 @@
-#ifndef NET_H
-#define NET_H
+//
+//  net.h
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
+#ifndef net_h
+#define net_h
 
 #include <vector>
 
@@ -16,7 +24,7 @@ private:
     std::vector<sf::Layer *> layers;
     std::vector<double *> trainingSamples;
     
-    double *calculateNetOutput(double *input);
+    double *calculateNetOutput(double *sample);
     
 public:
     static unsigned long inputDataWidth;
@@ -26,10 +34,10 @@ public:
     
     void addLayer(sf::Layer *layer);
     
-    void addTrainingSample(double *data);
-    double *classifySample(double *data);
+    void addTrainingSample(double *sample);
+    double *classifySample(double *sample);
     
     void train();
 };
 
-#endif // NET_H
+#endif /* net_h */

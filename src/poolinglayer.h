@@ -1,5 +1,13 @@
-#ifndef POOLINGLAYER_H
-#define POOLINGLAYER_H
+//
+//  poolinglayer.h
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
+#ifndef poolinglayer_h
+#define poolinglayer_h
 
 #include "layer.h"
 
@@ -20,4 +28,4 @@ public:
     double *getOutput(unsigned long &width, unsigned long &height) override;
 };
 
-#endif // POOLINGLAYER_H
+#endif /* poolinglayer_h */

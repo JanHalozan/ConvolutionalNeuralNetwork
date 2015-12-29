@@ -1,5 +1,13 @@
-#ifndef CONVOLUTIONLAYER_H
-#define CONVOLUTIONLAYER_H
+//
+//  convolutionlayer.h
+//  ConvolutionalNeuralNetwork
+//
+//  Created by Jan Haložan on 29/12/15.
+//  Copyright © 2015 JanHalozan. All rights reserved.
+//
+
+#ifndef convolutionlayer_h
+#define convolutionlayer_h
 
 #include <vector>
 
@@ -24,4 +32,4 @@ public:
     double *getOutput(unsigned long &width, unsigned long &height) override;
 };
 
-#endif // CONVOLUTIONLAYER_H
+#endif /* convolutionlayer_h */
