@@ -1,5 +1,7 @@
 #include "neuron.h"
 
+double sf::Neuron::learningRate = 0.5;
+
 sf::Neuron::Neuron() : output(0.0)
 {
 }
@@ -37,10 +39,20 @@ void sf::Neuron::calculateOutput()
         sum += tmp;
     }
     
-    this->output = 1.0 / (1 + exp(-NEURON_PARAMETER_SLOPE * sum));
+    this->output = 1.0 / (1 + exp(-sum));
 }
 
 double sf::Neuron::getOutput()
 {
     return this->output;
+}
+
+void sf::Neuron::backpop(std::vector<double> values)
+{
+    (void)values.size();
+}
+
+double sf::Neuron::getGradient()
+{
+    return this->gradient;
 }

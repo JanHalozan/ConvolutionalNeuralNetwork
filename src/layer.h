@@ -20,11 +20,11 @@ class sf::Layer
 protected:
     sf::LayerType type;
     
-    unsigned short inputWidth;
-    unsigned short inputHeight;
+    unsigned long inputWidth;
+    unsigned long inputHeight;
     
-    unsigned short outputWidth;
-    unsigned short outputHeight;
+    unsigned long outputWidth;
+    unsigned long outputHeight;
     
     double *input;
     double *output;
@@ -34,9 +34,9 @@ public:
     
     sf::LayerType getType();
     
-    void loadInput(double *input, unsigned short width, unsigned short height);
+    void loadInput(double *input, unsigned long width, unsigned long height);
     virtual void calculateOutput() = 0;
-    virtual double *getOutput(int &width, int &height) = 0;
+    virtual double *getOutput(unsigned long &width, unsigned long &height) = 0;
 };
 
 #endif // LAYER_H

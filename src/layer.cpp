@@ -11,7 +11,7 @@ sf::LayerType sf::Layer::getType()
     return this->type;
 }
 
-void sf::Layer::loadInput(double *input, unsigned short width, unsigned short height)
+void sf::Layer::loadInput(double *input, unsigned long width, unsigned long height)
 {
     this->inputWidth = width;
     this->inputHeight = height;

@@ -1,8 +1,6 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#define NEURON_PARAMETER_SLOPE 1.0
-
 #include <vector>
 #include <cstdlib>
 #include <ctime>
@@ -22,14 +20,20 @@ private:
     std::vector<double> inputs;
 
     double output;
+    double gradient;
     
 public:
+    static double learningRate;
+    
     Neuron();
     
     void randomizeWeights();
     void loadInput(std::vector<double> input);
     void calculateOutput();
     double getOutput();
+    
+    void backpop(std::vector<double> values);
+    double getGradient();
 };
 
 #endif // NEURON_H

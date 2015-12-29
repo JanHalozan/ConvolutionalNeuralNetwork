@@ -11,13 +11,13 @@ namespace sf
 class sf::PoolingLayer : public sf::Layer
 {
 private:
-    unsigned short poolingSize;
+    unsigned long poolingSize;
     
 public:
     PoolingLayer();
 
     void calculateOutput() override;
-    double *getOutput(int &width, int &height) override;
+    double *getOutput(unsigned long &width, unsigned long &height) override;
 };
 
 #endif // POOLINGLAYER_H

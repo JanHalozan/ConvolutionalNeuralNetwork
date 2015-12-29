@@ -10,7 +10,7 @@ void sf::ConvolutionLayer::calculateOutput()
     
 }
 
-double *sf::ConvolutionLayer::getOutput(int &width, int &height)
+double *sf::ConvolutionLayer::getOutput(unsigned long &width, unsigned long &height)
 {
     width = this->outputWidth;
     height = this->outputHeight;

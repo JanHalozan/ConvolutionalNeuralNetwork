@@ -19,13 +19,13 @@ void sf::PoolingLayer::calculateOutput()
     this->outputHeight = this->inputHeight / this->poolingSize;
     this->output = new double[this->outputWidth * this->outputHeight];
     
-    int outRow = 0;
-    int outCol = 0;
+    unsigned long outRow = 0;
+    unsigned long outCol = 0;
     
     //Goes first columns then rows
-    for (int row = 0; row < this->inputHeight; row += this->poolingSize)
+    for (unsigned long row = 0; row < this->inputHeight; row += this->poolingSize)
     {
-        for (int col = 0; col < this->inputWidth; col += this->poolingSize)
+        for (unsigned long col = 0; col < this->inputWidth; col += this->poolingSize)
         {
             double max = maxQuartet(this->input[row * this->inputWidth + col],
                                     this->input[row * this->inputWidth + col + 1],
@@ -40,7 +40,7 @@ void sf::PoolingLayer::calculateOutput()
     }
 }
 
-double *sf::PoolingLayer::getOutput(int &width, int &height)
+double *sf::PoolingLayer::getOutput(unsigned long &width, unsigned long &height)
 {
     width = this->outputWidth;
     height = this->outputHeight;

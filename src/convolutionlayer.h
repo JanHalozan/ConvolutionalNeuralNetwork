@@ -21,7 +21,7 @@ public:
     ConvolutionLayer();
     
     void calculateOutput() override;
-    double *getOutput(int &width, int &height) override;
+    double *getOutput(unsigned long &width, unsigned long &height) override;
 };
 
 #endif // CONVOLUTIONLAYER_H
