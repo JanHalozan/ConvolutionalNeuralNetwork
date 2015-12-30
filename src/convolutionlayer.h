@@ -9,9 +9,6 @@
 #ifndef convolutionlayer_h
 #define convolutionlayer_h
 
-#include <vector>
-
-#include "neuron.h"
 #include "layer.h"
 
 namespace sf
@@ -29,7 +26,7 @@ public:
     ConvolutionLayer();
     
     void calculateOutput() override;
-    double *getOutput(unsigned long &width, unsigned long &height) override;
+    void backprop() override;
 };
 
 #endif /* convolutionlayer_h */

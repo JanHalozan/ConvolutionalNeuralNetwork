@@ -10,7 +10,7 @@
 
 sf::ConvolutionLayer::ConvolutionLayer() : Layer()
 {
-    
+    this->type = kLayerTypeConvolutional;
 }
 
 void sf::ConvolutionLayer::calculateOutput()
@@ -18,10 +18,7 @@ void sf::ConvolutionLayer::calculateOutput()
     
 }
 
-double *sf::ConvolutionLayer::getOutput(unsigned long &width, unsigned long &height)
+void sf::ConvolutionLayer::backprop()
 {
-    width = this->outputWidth;
-    height = this->outputHeight;
     
-    return this->output;
 }

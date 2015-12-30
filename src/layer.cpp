@@ -25,3 +25,11 @@ void sf::Layer::loadInput(double *input, unsigned long width, unsigned long heig
     this->inputHeight = height;
     this->input = input;
 }
+
+double *sf::Layer::getOutput(unsigned long &width, unsigned long &height)
+{
+    width = this->outputWidth;
+    height = this->outputHeight;
+    
+    return this->output;
+}

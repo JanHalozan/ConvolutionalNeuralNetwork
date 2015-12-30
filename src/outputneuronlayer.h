@@ -9,4 +9,22 @@
 #ifndef outputneuronlayer_h
 #define outputneuronlayer_h
 
+#include "layer.h"
+
+namespace sf
+{
+    class OutputNeuronLayer;
+}
+
+class sf::OutputNeuronLayer : public sf::Layer
+{
+private:
+    
+public:
+    OutputNeuronLayer();
+    
+    void calculateOutput() override;
+    void backprop() override;
+};
+
 #endif /* outputneuronlayer_h */

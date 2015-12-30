@@ -25,7 +25,7 @@ public:
     PoolingLayer();
 
     void calculateOutput() override;
-    double *getOutput(unsigned long &width, unsigned long &height) override;
+    void backprop() override;
 };
 
 #endif /* poolinglayer_h */

@@ -76,16 +76,16 @@
 		42F69DD41C31FE3F005082C1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */,
-				42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */,
 				42F69DE31C31FED1005082C1 /* helpers.h */,
 				42F69DD71C31FE3F005082C1 /* main.cpp */,
-				42F69DD61C31FE3F005082C1 /* layer.h */,
-				42F69DD51C31FE3F005082C1 /* layer.cpp */,
 				42F69DD91C31FE3F005082C1 /* net.h */,
 				42F69DD81C31FE3F005082C1 /* net.cpp */,
 				42F69DDB1C31FE3F005082C1 /* neuron.h */,
 				42F69DDA1C31FE3F005082C1 /* neuron.cpp */,
+				42F69DD61C31FE3F005082C1 /* layer.h */,
+				42F69DD51C31FE3F005082C1 /* layer.cpp */,
+				42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */,
+				42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */,
 				42F69DDD1C31FE3F005082C1 /* poolinglayer.h */,
 				42F69DDC1C31FE3F005082C1 /* poolinglayer.cpp */,
 				42F69DE51C3297B4005082C1 /* convolutionlayer.h */,

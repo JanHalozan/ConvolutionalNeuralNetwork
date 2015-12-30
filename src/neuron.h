@@ -40,7 +40,7 @@ public:
     void calculateOutput();
     double getOutput();
     
-    void backpop(std::vector<double> values);
+    void backprop(std::vector<double> values);
     double getGradient();
 };
 

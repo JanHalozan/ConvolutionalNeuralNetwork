@@ -48,10 +48,7 @@ void sf::PoolingLayer::calculateOutput()
     }
 }
 
-double *sf::PoolingLayer::getOutput(unsigned long &width, unsigned long &height)
+void sf::PoolingLayer::backprop()
 {
-    width = this->outputWidth;
-    height = this->outputHeight;
     
-    return this->output;
 }

@@ -55,9 +55,9 @@ double sf::Neuron::getOutput()
     return this->output;
 }
 
-void sf::Neuron::backpop(std::vector<double> values)
+void sf::Neuron::backprop(std::vector<double> values)
 {
-    (void)values.size();
+    
 }
 
 double sf::Neuron::getGradient()

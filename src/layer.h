@@ -9,6 +9,9 @@
 #ifndef layer_h
 #define layer_h
 
+#include <vector>
+
+#include "neuron.h"
 #include "helpers.h"
 
 namespace sf
@@ -45,7 +48,8 @@ public:
     
     void loadInput(double *input, unsigned long width, unsigned long height);
     virtual void calculateOutput() = 0;
-    virtual double *getOutput(unsigned long &width, unsigned long &height) = 0;
+    virtual double *getOutput(unsigned long &width, unsigned long &height);
+    virtual void backprop() = 0;
 };
 
 #endif /* layer_h */

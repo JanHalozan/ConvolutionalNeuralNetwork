@@ -7,3 +7,19 @@
 //
 
 #include "outputneuronlayer.h"
+
+sf::OutputNeuronLayer::OutputNeuronLayer() : sf::Layer()
+{
+    this->type = kLayerTypeOutputNeuron;
+}
+
+void sf::OutputNeuronLayer::calculateOutput()
+{
+    
+}
+
+void sf::OutputNeuronLayer::backprop()
+{
+    std::vector<double> errors;
+    
+}
