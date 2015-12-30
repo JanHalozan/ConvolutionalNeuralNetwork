@@ -19,11 +19,18 @@
 namespace sf
 {
     class Neuron;
+    
+    typedef enum {
+        kNeuronActivationFunctionTypeSig = 1,
+        kNeuronActivationFunctionTypeConvolution = 2
+    } NeuronActivationFunctionType;
 }
 
 class sf::Neuron
 {
 private:
+    sf::NeuronActivationFunctionType activationType;
+    
     std::vector<double> weights;
     std::vector<double> inputs;
 
@@ -42,6 +49,9 @@ public:
     
     void backprop(std::vector<double> values);
     double getGradient();
+    
+    void setActivationFunctionType(sf::NeuronActivationFunctionType t);
+    sf::NeuronActivationFunctionType getActivationFunctionType();
 };
 
 #endif /* neuron_h */

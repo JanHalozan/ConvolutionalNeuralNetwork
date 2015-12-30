@@ -39,15 +39,27 @@ void sf::Neuron::calculateOutput()
 {
     assert_log(this->inputs.size() == this->weights.size(), "Weights and inputs not the same.");
     
-    double sum = 0.0;
-    
-    for (unsigned long i = 0; i < this->inputs.size(); ++i)
+    switch (this->activationType)
     {
-        double tmp = this->inputs[i] * this->weights[i];
-        sum += tmp;
+        case kNeuronActivationFunctionTypeSig:
+        {
+            double sum = 0.0;
+            
+            for (unsigned long i = 0; i < this->inputs.size(); ++i)
+            {
+                double tmp = this->inputs[i] * this->weights[i];
+                sum += tmp;
+            }
+            
+            this->output = 1.0 / (1 + exp(-sum));
+        }
+            break;
+        case kNeuronActivationFunctionTypeConvolution:
+        {
+            
+        }
+            break;
     }
-    
-    this->output = 1.0 / (1 + exp(-sum));
 }
 
 double sf::Neuron::getOutput()
@@ -63,4 +75,14 @@ void sf::Neuron::backprop(std::vector<double> values)
 double sf::Neuron::getGradient()
 {
     return this->gradient;
+}
+
+void sf::Neuron::setActivationFunctionType(sf::NeuronActivationFunctionType t)
+{
+    this->activationType = t;
+}
+
+sf::NeuronActivationFunctionType sf::Neuron::getActivationFunctionType()
+{
+    return this->activationType;
 }

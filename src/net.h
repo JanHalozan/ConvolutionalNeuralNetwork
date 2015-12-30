@@ -10,8 +10,13 @@
 #define net_h
 
 #include <vector>
+#include <limits>
+#include <cmath>
 
 #include "layer.h"
+#include "outputneuronlayer.h"
+#include "poolinglayer.h"
+#include "neuron.h"
 
 namespace sf
 {
@@ -21,8 +26,14 @@ namespace sf
 class sf::Net
 {
 private:
+    double learningRate;
+    double breakErrorLimit;
+    unsigned long breakEpochLimit;
+    
     std::vector<sf::Layer *> layers;
+    
     std::vector<double *> trainingSamples;
+    std::vector<int> trainingSampleClasses;
     
     double *calculateNetOutput(double *sample);
     
@@ -31,10 +42,11 @@ public:
     static unsigned long inputDataHeight;
     
     Net();
+    ~Net();
     
     void addLayer(sf::Layer *layer);
     
-    void addTrainingSample(double *sample);
+    void addTrainingSample(double *sample, int sampleClass);
     double *classifySample(double *sample);
     
     void train();

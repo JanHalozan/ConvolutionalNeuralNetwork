@@ -19,7 +19,6 @@ namespace sf
 class sf::ConvolutionLayer : public sf::Layer
 {
 private:
-    std::vector<sf::Neuron *> neurons;
     double convolve(double *input, double *kernel);
     
 public:

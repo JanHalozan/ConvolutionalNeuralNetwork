@@ -8,7 +8,13 @@
 #include <cassert>
 #include <iostream>
 
-#include "poolinglayer.h"
+#include "net.h"
+
+class TestOutLayer : public sf::OutputNeuronLayer
+{
+public:
+    inline unsigned long getNeuronsCount() { return this->neurons->size(); }
+};
 
 int main(int argc, char const *argv[])
 {
@@ -31,6 +37,26 @@ int main(int argc, char const *argv[])
     assert(res[1] == 8);
     assert(res[2] == 9);
     assert(res[3] == 6);
+    
+    TestOutLayer *out = new TestOutLayer();
+    out->reserveNeurons(2);
+    assert_log(out->getNeuronsCount() == 2, "Neurons reserve fuckup");
+    out->reserveNeurons(100);
+    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    out->reserveNeurons(3);
+    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
+    out->reserveNeurons(2);
+    assert_log(out->getNeuronsCount() == 2, "Neurons reserve fuckup");
+    out->reserveNeurons(100);
+    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    out->reserveNeurons(3);
+    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
+    out->reserveNeurons(20);
+    assert_log(out->getNeuronsCount() == 20, "Neurons reserve fuckup");
+    out->reserveNeurons(100);
+    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    out->reserveNeurons(3);
+    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
 
     std::cout << "All good" << std::endl;
     

@@ -32,6 +32,8 @@ class sf::Layer
 protected:
     sf::LayerType type;
     
+    std::vector<sf::Neuron> *neurons;
+    
     unsigned long inputWidth;
     unsigned long inputHeight;
     
@@ -43,6 +45,7 @@ protected:
     
 public:
     Layer();
+    virtual ~Layer();
     
     sf::LayerType getType();
     
@@ -50,6 +53,8 @@ public:
     virtual void calculateOutput() = 0;
     virtual double *getOutput(unsigned long &width, unsigned long &height);
     virtual void backprop() = 0;
+    
+    void reserveNeurons(unsigned long count);
 };
 
 #endif /* layer_h */

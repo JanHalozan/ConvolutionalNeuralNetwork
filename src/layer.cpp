@@ -12,6 +12,12 @@ sf::Layer::Layer()
 {
     this->output = nullptr;
     this->input = nullptr;
+    this->neurons = new std::vector<sf::Neuron>();
+}
+
+sf::Layer::~Layer()
+{
+    delete this->neurons;
 }
 
 sf::LayerType sf::Layer::getType()
@@ -32,4 +38,21 @@ double *sf::Layer::getOutput(unsigned long &width, unsigned long &height)
     height = this->outputHeight;
     
     return this->output;
+}
+
+void sf::Layer::reserveNeurons(unsigned long count)
+{
+    if (this->neurons->size() != count)
+    {
+        const long diff = labs((long)(this->neurons->size() - count));
+        if (this->neurons->size() > count)
+        {
+            this->neurons->erase(this->neurons->end() - diff, this->neurons->end());
+        }
+        else
+        {
+            for (long i = 0; i < diff; ++i)
+                this->neurons->push_back(sf::Neuron());
+        }
+    }
 }
