@@ -26,7 +26,6 @@ namespace sf
 class sf::Net
 {
 private:
-    double learningRate;
     double breakErrorLimit;
     unsigned long breakEpochLimit;
     

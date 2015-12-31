@@ -11,7 +11,7 @@
 unsigned long sf::Net::inputDataWidth = 5;
 unsigned long sf::Net::inputDataHeight = 1;
 
-sf::Net::Net() : learningRate(0.5), breakErrorLimit(0.001), breakEpochLimit(ULONG_MAX)
+sf::Net::Net() : breakErrorLimit(0.001), breakEpochLimit(ULONG_MAX)
 {
 }
 
@@ -66,8 +66,12 @@ void sf::Net::train()
                 errors[i] = fabs(desiredResponse - output[i]);
             }
             
-            //Backprop
-            this->layers.back()->backprop();
+            for (auto it = this->layers.rbegin(); it != this->layers.rend(); ++it)
+            {
+                sf::Layer *layer = *it;
+                layer->backprop();
+                
+            }
             
             ++sampleCounter;
         }
