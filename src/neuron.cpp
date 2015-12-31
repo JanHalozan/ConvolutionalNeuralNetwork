@@ -10,7 +10,7 @@
 
 double sf::Neuron::learningRate = 0.5;
 
-sf::Neuron::Neuron() : output(0.0)
+sf::Neuron::Neuron() : activationType(kNeuronActivationFunctionTypeSig), output(0.0)
 {
 }
 
@@ -67,9 +67,10 @@ double sf::Neuron::getOutput()
     return this->output;
 }
 
-void sf::Neuron::backprop(std::vector<double> values)
+void sf::Neuron::recalculateWeights()
 {
-    
+    for (unsigned long i = 0; i < this->inputs.size(); ++i)
+        this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
 }
 
 double sf::Neuron::getGradient()

@@ -46,9 +46,9 @@ public:
     void loadInput(std::vector<double> input);
     void calculateOutput();
     double getOutput();
-    
-    void backprop(std::vector<double> values);
     double getGradient();
+    
+    void recalculateWeights();
     
     void setActivationFunctionType(sf::NeuronActivationFunctionType t);
     sf::NeuronActivationFunctionType getActivationFunctionType();
