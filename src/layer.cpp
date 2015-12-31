@@ -8,7 +8,7 @@
 
 #include "layer.h"
 
-sf::Layer::Layer()
+sf::Layer::Layer() : inputWidth(0), inputHeight(0)
 {
     this->output = nullptr;
     this->input = nullptr;

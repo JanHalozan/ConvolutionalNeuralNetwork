@@ -9,11 +9,6 @@
 #ifndef helpers_h
 #define helpers_h
 
-#include <iostream>
-#include <cassert>
-
-#define assert_log(x, y) {if (!(x)) {std::cout << y << std::endl; assert(false);}}
-
 template <typename T> T maxQuartet(T a, T b, T c, T d)
 {
     T val = a;
