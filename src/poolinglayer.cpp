@@ -75,7 +75,7 @@ void sf::PoolingLayer::calculateOutput()
     }
 }
 
-void sf::PoolingLayer::backprop()
+void sf::PoolingLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info)
 {
     
 }

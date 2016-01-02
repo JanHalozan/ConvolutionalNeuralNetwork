@@ -14,6 +14,7 @@
 		42F69DE21C31FE3F005082C1 /* poolinglayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42F69DDC1C31FE3F005082C1 /* poolinglayer.cpp */; };
 		42F69DE61C3297B4005082C1 /* convolutionlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42F69DE41C3297B4005082C1 /* convolutionlayer.cpp */; };
 		42F69DEC1C3326AA005082C1 /* outputneuronlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */; };
+		42F69DF01C383F35005082C1 /* hiddenneuronlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42F69DEE1C383F35005082C1 /* hiddenneuronlayer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,8 @@
 		42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = outputneuronlayer.cpp; sourceTree = "<group>"; };
 		42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = outputneuronlayer.h; sourceTree = "<group>"; };
 		42F69DED1C354E4A005082C1 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		42F69DEE1C383F35005082C1 /* hiddenneuronlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hiddenneuronlayer.cpp; sourceTree = "<group>"; };
+		42F69DEF1C383F35005082C1 /* hiddenneuronlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hiddenneuronlayer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				42F69DD51C31FE3F005082C1 /* layer.cpp */,
 				42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */,
 				42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */,
+				42F69DEF1C383F35005082C1 /* hiddenneuronlayer.h */,
+				42F69DEE1C383F35005082C1 /* hiddenneuronlayer.cpp */,
 				42F69DDD1C31FE3F005082C1 /* poolinglayer.h */,
 				42F69DDC1C31FE3F005082C1 /* poolinglayer.cpp */,
 				42F69DE51C3297B4005082C1 /* convolutionlayer.h */,
@@ -158,6 +163,7 @@
 				42F69DEC1C3326AA005082C1 /* outputneuronlayer.cpp in Sources */,
 				42F69DE11C31FE3F005082C1 /* neuron.cpp in Sources */,
 				42F69DE21C31FE3F005082C1 /* poolinglayer.cpp in Sources */,
+				42F69DF01C383F35005082C1 /* hiddenneuronlayer.cpp in Sources */,
 				42F69DDE1C31FE3F005082C1 /* layer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

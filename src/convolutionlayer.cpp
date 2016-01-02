@@ -18,7 +18,7 @@ void sf::ConvolutionLayer::calculateOutput()
     
 }
 
-void sf::ConvolutionLayer::backprop()
+void sf::ConvolutionLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info)
 {
     
 }

@@ -8,10 +8,7 @@
 
 #include "net.h"
 
-unsigned long sf::Net::inputDataWidth = 5;
-unsigned long sf::Net::inputDataHeight = 1;
-
-sf::Net::Net() : breakErrorLimit(0.001), breakEpochLimit(ULONG_MAX)
+sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.001), breakEpochLimit(ULONG_MAX), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
 {
 }
 
@@ -46,13 +43,12 @@ void sf::Net::train()
     layer->reserveNeurons(uniqueClassesCount);
     
     unsigned long epoch = 0;
-    double maxError = std::numeric_limits<double>::max();
-//    double *output = nullptr;
     
     do
     {
         std::vector<double> errors(uniqueClassesCount, -1.0);
         unsigned long sampleCounter = 0;
+        double maxError = std::numeric_limits<double>::min();
         
         for (double *sample : this->trainingSamples)
         {
@@ -63,20 +59,35 @@ void sf::Net::train()
             for (unsigned long i = 0; i < uniqueClassesCount; ++i)
             {
                 double desiredResponse = sampleCounter == i ? 1.0 : 0.0;
-                errors[i] = fabs(desiredResponse - output[i]);
+                double error = fabs(desiredResponse - output[i]);
+                
+                if (error > maxError)
+                    maxError = error;
             }
             
             for (auto it = this->layers.rbegin(); it != this->layers.rend(); ++it)
             {
-                sf::Layer *layer = *it;
-                layer->backprop();
+                auto info = new sf::LayerBackpropInfo();
+                info->samplesCount = this->trainingSamples.size();
+                info->currentSampleNumber = sampleCounter;
                 
+                auto layer = *it;
+                layer->loadInput(sample, this->inputDataWidth, this->inputDataHeight);
+                layer->backprop(*(it - 1), *(it + 1), info);
+                
+                delete info;
             }
             
             ++sampleCounter;
         }
         
-    } while (++epoch < this->breakEpochLimit && maxError >= this->breakErrorLimit);
+        //TODO: Cleanup
+        if (maxError < this->breakErrorLimit)
+            break;
+        if (++epoch >= this->breakEpochLimit)
+            break;
+        
+    } while (true);
 }
 
 double *sf::Net::classifySample(double *sample)

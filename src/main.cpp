@@ -7,14 +7,9 @@
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
+#include <climits>
 
 #include "net.h"
-
-class TestOutLayer : public sf::OutputNeuronLayer
-{
-public:
-    inline unsigned long getNeuronsCount() { return this->neurons->size(); }
-};
 
 int main(int argc, char const *argv[])
 {
@@ -56,25 +51,45 @@ int main(int argc, char const *argv[])
     assert(res[2] == 9);
     assert(res[3] == 6);
     
-    TestOutLayer *out = new TestOutLayer();
+    auto out = new sf::OutputNeuronLayer;
     out->reserveNeurons(2);
-    assert_log(out->getNeuronsCount() == 2, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 2, "Neurons reserve fuckup");
     out->reserveNeurons(100);
-    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
     out->reserveNeurons(3);
-    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
     out->reserveNeurons(2);
-    assert_log(out->getNeuronsCount() == 2, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 2, "Neurons reserve fuckup");
     out->reserveNeurons(100);
-    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
     out->reserveNeurons(3);
-    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
     out->reserveNeurons(20);
-    assert_log(out->getNeuronsCount() == 20, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 20, "Neurons reserve fuckup");
     out->reserveNeurons(100);
-    assert_log(out->getNeuronsCount() == 100, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
     out->reserveNeurons(3);
-    assert_log(out->getNeuronsCount() == 3, "Neurons reserve fuckup");
+    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
+    
+    //33614 564950498 1097816499 1969887316
+    std::cout << RAND_MAX << std::endl; //RAND_MAX = 2147483647
+    const auto samples = 2;
+    srand(2);
+    auto net = new sf::Net(3, 1);
+    net->addLayer(new sf::OutputNeuronLayer());
+    double sample[] = {1, 2, 8};
+//    net->addTrainingSample(sample, 0);
+    net->layers.front()->reserveNeurons(samples);
+    double *output = net->classifySample(sample);
+    assert_log(net->layers.front()->neurons->front().weights[0] - (-0.499984) < std::numeric_limits<double>::epsilon(), "Weights fuckup");
+    assert_log(output[0] - 0.97401439427008673 < std::numeric_limits<double>::epsilon(), "Output fuckup");
+    
+    for (int i = 0; i < samples; ++i)
+        std::cout << output[i] << ", ";
+    
+    net->layers.front()->neurons->front().gradient = 0.23;
+    net->layers.front()->neurons->front().recalculateWeights();
+    assert_log(net->layers.front()->neurons->front().weights[0] - (-0.499984 + (-0.499984 * 0.23 * 1)) < std::numeric_limits<double>::epsilon(), "Weights fuckup");
 
     std::cout << "All good" << std::endl;
     

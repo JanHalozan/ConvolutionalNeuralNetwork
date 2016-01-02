@@ -37,10 +37,10 @@ private:
     double *calculateNetOutput(double *sample);
     
 public:
-    static unsigned long inputDataWidth;
-    static unsigned long inputDataHeight;
+    unsigned long inputDataWidth;
+    unsigned long inputDataHeight;
     
-    Net();
+    Net(unsigned long inputDataWidth, unsigned long inputDataHeight);
     ~Net();
     
     void addLayer(sf::Layer *layer);

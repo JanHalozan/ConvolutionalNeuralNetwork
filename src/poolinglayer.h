@@ -29,7 +29,7 @@ public:
     PoolingLayer();
 
     void calculateOutput() override;
-    void backprop() override;
+    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
 };
 
 #endif /* poolinglayer_h */
