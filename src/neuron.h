@@ -9,12 +9,12 @@
 #ifndef neuron_h
 #define neuron_h
 
+#include "helpers.h"
+
 #include <vector>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-
-#include "helpers.h"
 
 namespace sf
 {

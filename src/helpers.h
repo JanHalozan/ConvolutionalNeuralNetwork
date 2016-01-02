@@ -9,14 +9,24 @@
 #ifndef helpers_h
 #define helpers_h
 
-template <typename T> T maxQuartet(T a, T b, T c, T d)
-{
-    T val = a;
-    if (b > val) val = b;
-    if (c > val) val = c;
-    if (d > val) val = d;
-    
-    return val;
-}
+#define DEBUG
+
+#ifdef DEBUG
+
+#define GCC diagnostic ignored "-Wkeyword-macro"
+
+#include <iostream>
+#include <cassert>
+
+#define assert_log(x, y) {if (!(x)) {std::cout << y << std::endl; assert(false);}}
+
+#define private public
+#define protected public
+
+#else
+
+#define assert_log(x, y)
+
+#endif
 
 #endif /* helpers_h */

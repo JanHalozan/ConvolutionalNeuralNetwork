@@ -9,10 +9,11 @@
 #ifndef layer_h
 #define layer_h
 
+#include "helpers.h"
+
 #include <vector>
 
 #include "neuron.h"
-#include "helpers.h"
 
 namespace sf
 {
@@ -55,6 +56,7 @@ public:
     virtual ~Layer();
     
     sf::LayerType getType();
+    const std::vector<sf::Neuron> getNeurons() const;
     
     void loadInput(double *input, unsigned long width, unsigned long height);
     virtual void calculateOutput() = 0;

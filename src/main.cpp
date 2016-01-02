@@ -4,6 +4,8 @@
 //  Copyright © 2015 JanHalozan. All rights reserved.
 //
 
+#include "helpers.h"
+
 #include <cstdlib>
 #include <cassert>
 #include <iostream>

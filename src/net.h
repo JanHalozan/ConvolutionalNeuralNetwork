@@ -9,6 +9,8 @@
 #ifndef net_h
 #define net_h
 
+#include "helpers.h"
+
 #include <vector>
 #include <limits>
 #include <cmath>

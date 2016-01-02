@@ -45,9 +45,9 @@
 		42F69DE51C3297B4005082C1 /* convolutionlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convolutionlayer.h; sourceTree = "<group>"; };
 		42F69DEA1C3326AA005082C1 /* outputneuronlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = outputneuronlayer.cpp; sourceTree = "<group>"; };
 		42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = outputneuronlayer.h; sourceTree = "<group>"; };
-		42F69DED1C354E4A005082C1 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		42F69DEE1C383F35005082C1 /* hiddenneuronlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hiddenneuronlayer.cpp; sourceTree = "<group>"; };
 		42F69DEF1C383F35005082C1 /* hiddenneuronlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hiddenneuronlayer.h; sourceTree = "<group>"; };
+		42F69DF11C385A55005082C1 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +64,7 @@
 		42F69DAE1C31FDAC005082C1 = {
 			isa = PBXGroup;
 			children = (
+				42F69DF11C385A55005082C1 /* Makefile */,
 				42F69DD41C31FE3F005082C1 /* src */,
 				42F69DB81C31FDAC005082C1 /* Products */,
 			);
@@ -80,7 +81,6 @@
 		42F69DD41C31FE3F005082C1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				42F69DED1C354E4A005082C1 /* PrefixHeader.pch */,
 				42F69DE31C31FED1005082C1 /* helpers.h */,
 				42F69DD71C31FE3F005082C1 /* main.cpp */,
 				42F69DD91C31FE3F005082C1 /* net.h */,
@@ -197,11 +197,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = src/PrefixHeader.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -245,7 +242,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = src/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
