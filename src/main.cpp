@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
         
         Net *net = new Net(3, 1);
         net->breakEpochLimit = 10000;
-        net->addLayer(new HiddenNeuronLayer(6));
+        net->addLayer(new HiddenNeuronLayer(3));
         net->addLayer(new OutputNeuronLayer());
         
         net->addTrainingSample(sample1, 0);

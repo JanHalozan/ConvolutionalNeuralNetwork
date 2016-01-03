@@ -46,14 +46,14 @@ void sf::Net::train()
     
     do
     {
-        std::vector<double> errors(uniqueClassesCount, -1.0);
         unsigned long sampleCounter = 0;
         double maxError = std::numeric_limits<double>::min();
         
         for (double *sample : this->trainingSamples)
         {
             //Get the net output. Every output of intermediate layers is now set.
-            double *output = this->calculateNetOutput(sample);
+            std::vector<double *> layeredOutput = this->calculateCompleteNetOutput(sample);
+            double *output = layeredOutput.back();
             
             //We want the response to be 1.0 of the output neuron for the class we'were training now and 0.0 for all others.
             for (unsigned long i = 0; i < uniqueClassesCount; ++i)
@@ -65,6 +65,7 @@ void sf::Net::train()
                     maxError = error;
             }
             
+            auto layerOutputIt = layeredOutput.rend();
             for (auto it = this->layers.rbegin(); it != this->layers.rend(); ++it)
             {
                 auto info = new sf::LayerBackpropInfo();
@@ -72,10 +73,11 @@ void sf::Net::train()
                 info->currentSampleNumber = sampleCounter;
                 
                 auto layer = *it;
-                layer->loadInput(sample, this->inputDataWidth, this->inputDataHeight);
+                layer->loadInput(*layerOutputIt, this->inputDataWidth, this->inputDataHeight);
                 layer->backprop(*(it + 1), *(it - 1), info);
                 
                 delete info;
+                ++layerOutputIt;
             }
             
             ++sampleCounter;
@@ -95,13 +97,32 @@ double *sf::Net::classifySample(double *sample)
     return this->calculateNetOutput(sample);
 }
 
+std::vector<double *> sf::Net::calculateCompleteNetOutput(double *sample)
+{
+    std::vector<double *>layeredOutput;
+    
+    double *data = sample;
+    unsigned long width = this->inputDataWidth;
+    unsigned long height = this->inputDataHeight;
+    
+    for (auto layer : this->layers)
+    {
+        layer->loadInput(data, width, height);
+        layer->calculateOutput();
+        data = layer->getOutput(width, height);
+        layeredOutput.push_back(data);
+    }
+    
+    return layeredOutput;
+}
+
 double *sf::Net::calculateNetOutput(double *sample)
 {
     double *data = sample;
     unsigned long width = this->inputDataWidth;
     unsigned long height = this->inputDataHeight;
     
-    for (sf::Layer *layer : this->layers)
+    for (auto layer : this->layers)
     {
         layer->loadInput(data, width, height);
         layer->calculateOutput();

@@ -11,6 +11,7 @@
 sf::OutputNeuronLayer::OutputNeuronLayer() : sf::Layer()
 {
     this->type = kLayerTypeOutputNeuron;
+    this->outputHeight = 1;
 }
 
 void sf::OutputNeuronLayer::calculateOutput()
@@ -36,8 +37,7 @@ void sf::OutputNeuronLayer::calculateOutput()
         n.loadInput(input);
         n.calculateOutput();
         
-        this->output[i] = n.getOutput();
-        ++i;
+        this->output[i++] = n.getOutput();
     }
 }
 

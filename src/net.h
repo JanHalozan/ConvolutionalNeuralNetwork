@@ -39,6 +39,7 @@ private:
     std::vector<int> trainingSampleClasses;
     
     double *calculateNetOutput(double *sample);
+    std::vector<double *> calculateCompleteNetOutput(double *sample);
     
 public:
     unsigned long inputDataWidth;

@@ -23,7 +23,7 @@ void sf::HiddenNeuronLayer::calculateOutput()
         
         this->outputWidth = this->inputWidth;
         this->outputHeight = this->inputHeight; //TODO: Support for 2D output
-        this->output = new double[this->outputWidth];
+        this->output = new double[this->outputWidth * this->outputHeight];
     }
     
     unsigned long i = 0;
