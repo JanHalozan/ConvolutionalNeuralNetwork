@@ -8,22 +8,21 @@
 
 #include "hiddenneuronlayer.h"
 
-sf::HiddenNeuronLayer::HiddenNeuronLayer() : sf::Layer()
+sf::HiddenNeuronLayer::HiddenNeuronLayer(unsigned long neuronsCount) : sf::Layer()
 {
     this->type = kLayerTypeHiddenNeuron;
+    this->reserveNeurons(neuronsCount);
 }
 
 void sf::HiddenNeuronLayer::calculateOutput()
 {
-    if (this->neurons->empty())
-        this->reserveNeurons(this->inputWidth);
-    
     if (this->outputWidth != this->inputWidth)
     {
         if (this->output != nullptr)
             delete[] this->output;
         
         this->outputWidth = this->inputWidth;
+        this->outputHeight = this->inputHeight; //TODO: Support for 2D output
         this->output = new double[this->outputWidth];
     }
     
@@ -53,5 +52,6 @@ void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::Laye
         
         double gradient = neuron.getOutput() * (1.0 - neuron.getOutput()) * gradientSum;
         neuron.setGradient(gradient);
+        neuron.recalculateWeights();
     }
 }

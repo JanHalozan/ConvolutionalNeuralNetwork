@@ -17,7 +17,9 @@
 
 #include "layer.h"
 #include "outputneuronlayer.h"
+#include "hiddenneuronlayer.h"
 #include "poolinglayer.h"
+#include "convolutionlayer.h"
 #include "neuron.h"
 
 namespace sf

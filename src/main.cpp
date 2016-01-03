@@ -15,6 +15,41 @@
 
 int main(int argc, char const *argv[])
 {
+    {
+        double sample1[] = {1.0, 0.2, 0.1};
+        double sample2[] = {0.8, 0.1, 0.25};
+        double sample3[] = {0.2, 0.95, 0.1};
+        double sample4[] = {0.11, 0.9, 0.13};
+        double sample5[] = {0.0, 0.2, 0.91};
+        double sample6[] = {0.21, 0.12, 1.0};
+        
+        using namespace sf;
+        
+        Net *net = new Net(3, 1);
+        net->breakEpochLimit = 10000;
+        net->addLayer(new HiddenNeuronLayer(6));
+        net->addLayer(new OutputNeuronLayer());
+        
+        net->addTrainingSample(sample1, 0);
+        net->addTrainingSample(sample2, 0);
+        net->addTrainingSample(sample3, 1);
+        net->addTrainingSample(sample4, 1);
+        net->addTrainingSample(sample5, 2);
+        net->addTrainingSample(sample6, 2);
+        
+        net->train();
+        
+        double example[] = {1.0, 0.2, 0.11};
+        double *output = net->classifySample(example);
+        for (int i = 0; i < 3; ++i)
+            std::cout << output[i] << ", ";
+        
+        std::cout << std::endl;
+        
+        return 0;
+    }
+    
+    //Below is a bunch of "unit tests". These are just for testing purposes that things behave the way they should.
     sf::Neuron::learningRate = 0.5;
     
     double sum = (0.1 * -1) + (-0.1 * 1) + (0.5 * 2) + (0.2 * 3);

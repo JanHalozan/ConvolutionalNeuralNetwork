@@ -8,7 +8,7 @@
 
 #include "net.h"
 
-sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.001), breakEpochLimit(ULONG_MAX), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
+sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.001), breakEpochLimit(10000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
 {
 }
 
@@ -31,7 +31,7 @@ void sf::Net::addTrainingSample(double *sample, int sampleClass)
 
 void sf::Net::train()
 {
-    assert_log(this->layers.back()->getType() != kLayerTypeOutputNeuron, "Last layer must be of output type");
+    assert_log(this->layers.back()->getType() == kLayerTypeOutputNeuron, "Last layer must be of output type");
     
     //First let's find how many output neurons we need
     std::vector<int> uniqueClasses = this->trainingSampleClasses;
@@ -73,14 +73,14 @@ void sf::Net::train()
                 
                 auto layer = *it;
                 layer->loadInput(sample, this->inputDataWidth, this->inputDataHeight);
-                layer->backprop(*(it - 1), *(it + 1), info);
+                layer->backprop(*(it + 1), *(it - 1), info);
                 
                 delete info;
             }
             
             ++sampleCounter;
         }
-        
+        std::cout << maxError << std::endl;
         //TODO: Cleanup
         if (maxError < this->breakErrorLimit)
             break;
