@@ -15,6 +15,30 @@
 
 int main(int argc, char const *argv[])
 {
+//    {
+//        using namespace sf;
+//        
+//        double sample1[] = {0, 0};
+//        double sample2[] = {0, 1};
+//        double sample3[] = {1, 0};
+//        double sample4[] = {1, 1};
+//        
+//        Net *net = new Net(2, 1);
+//        
+//        net->addTrainingSample(sample1, 0);
+////        net->addTrainingSample(sample2, 1);
+////        net->addTrainingSample(sample3, 1);
+////        net->addTrainingSample(sample4, 0);
+//        
+//        net->addLayer(new HiddenNeuronLayer(2));
+//        net->addLayer(new OutputNeuronLayer());
+//        net->layers.back()->reserveNeurons(1);
+//        
+//        net->train();
+//        
+//        return 0;
+//    }
+    
     {
         double sample1[] = {1.0, 0.2, 0.1};
         double sample2[] = {0.8, 0.1, 0.25};
@@ -26,7 +50,6 @@ int main(int argc, char const *argv[])
         using namespace sf;
         
         Net *net = new Net(3, 1);
-        net->breakEpochLimit = 10000;
         net->addLayer(new HiddenNeuronLayer(3));
         net->addLayer(new OutputNeuronLayer());
         

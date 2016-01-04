@@ -45,6 +45,12 @@ double *sf::Layer::getOutput(unsigned long &width, unsigned long &height)
     return this->output;
 }
 
+void sf::Layer::recalculateWeights()
+{
+    for (auto &n : *this->neurons)
+        n.recalculateWeights();
+}
+
 void sf::Layer::reserveNeurons(unsigned long count)
 {
     if (this->neurons->size() != count)

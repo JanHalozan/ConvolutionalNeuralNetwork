@@ -51,9 +51,7 @@ void sf::OutputNeuronLayer::backprop(sf::Layer *, sf::Layer *, sf::LayerBackprop
         double actualOutput = n.getOutput();
         double gradient = actualOutput * (1.0 - actualOutput) * (desiredOutput - actualOutput);
         n.setGradient(gradient);
-        n.recalculateWeights();
         
         ++i;
     }
-    
 }

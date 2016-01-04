@@ -61,7 +61,9 @@ public:
     void loadInput(double *input, unsigned long width, unsigned long height);
     virtual void calculateOutput() = 0;
     virtual double *getOutput(unsigned long &width, unsigned long &height);
+    
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) = 0;
+    void recalculateWeights();
     
     void reserveNeurons(unsigned long count);
 };

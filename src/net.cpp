@@ -8,7 +8,7 @@
 
 #include "net.h"
 
-sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.001), breakEpochLimit(10000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
+sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.01), breakEpochLimit(100000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
 {
 }
 
@@ -80,14 +80,26 @@ void sf::Net::train()
                 ++layerOutputIt;
             }
             
+            for (auto layer : this->layers)
+            {
+                layer->recalculateWeights();
+            }
+            
             ++sampleCounter;
         }
-        std::cout << maxError << std::endl;
+        
         //TODO: Cleanup
         if (maxError < this->breakErrorLimit)
+        {
+            std::cout << "Minimum error rate reached in " << epoch << " epochs." << std::endl;
             break;
+        }
+        
         if (++epoch >= this->breakEpochLimit)
+        {
+            std::cout << "Epoch limit reached with " << maxError << " error rate." << std::endl;
             break;
+        }
         
     } while (true);
 }
