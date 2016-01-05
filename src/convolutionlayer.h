@@ -23,9 +23,7 @@ private:
     
     unsigned short stride;
     unsigned short kernelSide;
-    bool useZeroPadding;
-    
-    double convolve(double *input, double *kernel);
+    unsigned char zeroPaddingSize;
     
 public:
     ConvolutionLayer();
@@ -39,8 +37,8 @@ public:
     void setKernelSideSize(unsigned short size);
     unsigned short getKernelSideSize() const;
     
-    void setUseZeroPadding(bool use);
-    bool getUseZeroPadding() const;
+    void setZeroPaddingSize(unsigned char size);
+    unsigned char getZeroPaddingSize() const;
 };
 
 #endif /* convolutionlayer_h */

@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
         using namespace sf;
         
         Net *net = new Net(3, 1);
-        net->addLayer(new HiddenNeuronLayer(3));
+        net->addLayer(new HiddenNeuronLayer(4));
         net->addLayer(new OutputNeuronLayer());
         
         net->addTrainingSample(sample1, 0);

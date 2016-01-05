@@ -44,9 +44,11 @@ protected:
     
     unsigned long inputWidth;
     unsigned long inputHeight;
+    unsigned long inputDepth;
     
     unsigned long outputWidth;
     unsigned long outputHeight;
+    unsigned long outputDepth;
     
     double *input;
     double *output;

@@ -63,7 +63,11 @@ void sf::Layer::reserveNeurons(unsigned long count)
         else
         {
             for (long i = 0; i < diff; ++i)
-                this->neurons->push_back(sf::Neuron());
+            {
+                sf::Neuron n;
+                n.activationType = this->type == kLayerTypeConvolutional ? kNeuronActivationFunctionTypeConvolution : kNeuronActivationFunctionTypeSig;
+                this->neurons->push_back(n);
+            }
         }
     }
 }

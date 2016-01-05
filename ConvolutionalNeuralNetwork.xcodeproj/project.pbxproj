@@ -285,7 +285,7 @@
 				42F69DBD1C31FDAC005082C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		42F69DBE1C31FDAC005082C1 /* Build configuration list for PBXNativeTarget "ConvolutionalNeuralNetwork" */ = {
 			isa = XCConfigurationList;
@@ -294,7 +294,7 @@
 				42F69DC01C31FDAC005082C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
