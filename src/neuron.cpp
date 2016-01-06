@@ -63,16 +63,16 @@ void sf::Neuron::calculateOutput()
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
-#warning check if the kernel should be flipped and if the output should be put through a non-linearity function
-            const unsigned long size = this->weights.size();
+#warning check if the kernel should be flipped
+            const unsigned long kernelSize = this->weights.size() - 1;
             double sum = 0.0;
             
             for (unsigned long i = 0; i < this->inputs.size(); ++i)
             {
-                sum += this->inputs[i] * this->weights[size - i - 1];
+                sum += this->inputs[i] * this->weights[(i % kernelSize) + 1];
             }
             
-            this->output = sum;
+            this->output = 1.0 / (1 + exp(-sum));
         }
             break;
     }

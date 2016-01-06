@@ -38,36 +38,42 @@ void sf::ConvolutionLayer::calculateOutput()
     unsigned long outRow = 0;
     unsigned long outCol = 0;
     
-    for (unsigned long row = 0; row < this->inputHeight; ++row)
+    for (long long row = -this->zeroPaddingSize; row < (signed)(this->inputHeight + this->zeroPaddingSize); row += this->stride)
     {
-        for (unsigned long col = 0; col < this->inputWidth; ++col)
+        for (long long col = -this->zeroPaddingSize; col < (signed)(this->inputWidth + this->zeroPaddingSize); col += this->stride)
         {
-            for (unsigned long lyr = 0; lyr < this->inputDepth; ++lyr)
+            unsigned short depth = 0;
+            for (auto &neuron : *this->neurons)
             {
-                std::vector<double> input(this->kernelSide * this->kernelSide);
-                for (unsigned long y = 0; y < this->kernelSide; ++y)
+                std::vector<double> input(this->kernelSide * this->kernelSide * this->inputDepth);
+                
+                for (unsigned long lyr = 0; lyr < this->inputDepth; ++lyr)
                 {
-                    for (unsigned long x = 0; x < this->kernelSide; ++x)
+                    for (unsigned long y = 0; y < this->kernelSide; ++y)
                     {
-                        double val = this->input[(col + x) + ((row + y) * this->inputWidth) + (lyr * sliceSize)];
-                        input.push_back(val);
+                        for (unsigned long x = 0; x < this->kernelSide; ++x)
+                        {
+                            if (row < 0 || row >= (signed)this->inputHeight || col < 0 || col >= (signed)this->inputWidth)
+                            {
+                                input.push_back(0.0);
+                                continue;
+                            }
+                            
+                            double val = this->input[(col + x) + ((row + y) * this->inputWidth) + (lyr * sliceSize)];
+                            input.push_back(val);
+                        }
                     }
                 }
                 
-                unsigned short depth = 0;
-            
-                for (auto &neuron : *this->neurons)
-                {
-                    neuron.loadInput(input);
-                    neuron.calculateOutput();
-                    
-                    this->output[outCol + (outRow * this->outputWidth) + (outputSliceSize * depth)] = neuron.getOutput();
-                    
-                    ++outCol;
-                    outRow += outCol / this->outputWidth;
-                    outCol %= this->outputWidth;
-                    ++depth;
-                }
+                neuron.loadInput(input);
+                neuron.calculateOutput();
+                
+                this->output[outCol + (outRow * this->outputWidth) + (outputSliceSize * depth)] = neuron.getOutput();
+                
+                ++outCol;
+                outRow += outCol / this->outputWidth;
+                outCol %= this->outputWidth;
+                ++depth;
             }
         }
     }
