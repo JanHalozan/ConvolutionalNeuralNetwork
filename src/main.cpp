@@ -54,6 +54,17 @@ int main(int argc, char const *argv[])
         using namespace sf;
         
         ConvolutionLayer *layer = new ConvolutionLayer();
+        double input[] = {1, 2, 3, 4, 4, 3, 2, 1, 5, 6, 7, 8};
+        srand(2);
+        layer->loadInput(input, 2, 2, 3);
+        layer->setOutputFeatureMapsCount(2);
+        layer->calculateOutput();
+        
+        unsigned long w, h, d;
+        double *out = layer->getOutput(w, h, d);
+        
+        for (int i = 0; i < w * h * d; ++i)
+            std::cout << out[i] << ", ";
     }
     
 //    This example was used for debugging backprop
