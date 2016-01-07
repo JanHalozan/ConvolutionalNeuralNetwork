@@ -20,14 +20,14 @@ void sf::Neuron::randomizeWeights()
     srand((unsigned)time(NULL));
 #endif
     
-    for (unsigned long i = 0; i < this->inputs.size(); ++i)
+    for (ulong i = 0; i < this->inputs.size(); ++i)
     {
         double weight = (rand() / (double)RAND_MAX) - 0.5;
         this->weights.push_back(weight);
     }
 }
 
-double sf::Neuron::getWeight(unsigned long index) const
+double sf::Neuron::getWeight(ulong index) const
 {
     return this->weights[index];
 }
@@ -52,7 +52,7 @@ void sf::Neuron::calculateOutput()
         {
             double sum = 0.0;
             
-            for (unsigned long i = 0; i < this->inputs.size(); ++i)
+            for (ulong i = 0; i < this->inputs.size(); ++i)
             {
                 double tmp = this->inputs[i] * this->weights[i];
                 sum += tmp;
@@ -64,10 +64,10 @@ void sf::Neuron::calculateOutput()
         case kNeuronActivationFunctionTypeConvolution:
         {
 #warning check if the kernel should be flipped
-            const unsigned long kernelSize = this->weights.size() - 1;
+            const ulong kernelSize = this->weights.size() - 1;
             double sum = 0.0;
             
-            for (unsigned long i = 0; i < this->inputs.size(); ++i)
+            for (ulong i = 0; i < this->inputs.size(); ++i)
             {
                 sum += this->inputs[i] * this->weights[(i % kernelSize) + 1];
             }
@@ -85,7 +85,7 @@ double sf::Neuron::getOutput() const
 
 void sf::Neuron::recalculateWeights()
 {
-    for (unsigned long i = 0; i < this->inputs.size(); ++i)
+    for (ulong i = 0; i < this->inputs.size(); ++i)
         this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
 }
 

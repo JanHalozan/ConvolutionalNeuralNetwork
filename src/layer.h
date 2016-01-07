@@ -18,7 +18,7 @@
 namespace sf
 {
     class Layer;
-    
+
     typedef enum
     {
         kLayerTypeConvolutional = 1,
@@ -26,12 +26,12 @@ namespace sf
         kLayerTypeHiddenNeuron = 3,
         kLayerTypeOutputNeuron = 4
     } LayerType;
-    
+
     struct LayerBackpropInfo
     {
-        unsigned long samplesCount;
-        unsigned long currentSampleNumber;
-        
+        ulong samplesCount;
+        ulong currentSampleNumber;
+
     };
 }
 
@@ -39,35 +39,35 @@ class sf::Layer
 {
 protected:
     sf::LayerType type;
-    
+
     std::vector<sf::Neuron> *neurons;
-    
-    unsigned long inputWidth;
-    unsigned long inputHeight;
-    unsigned long inputDepth;
-    
-    unsigned long outputWidth;
-    unsigned long outputHeight;
-    unsigned long outputDepth;
-    
+
+    ulong inputWidth;
+    ulong inputHeight;
+    ulong inputDepth;
+
+    ulong outputWidth;
+    ulong outputHeight;
+    ulong outputDepth;
+
     double *input;
     double *output;
-    
+
 public:
     Layer();
     virtual ~Layer();
-    
+
     sf::LayerType getType();
     const std::vector<sf::Neuron> getNeurons() const;
-    
-    void loadInput(double *input, unsigned long width, unsigned long height, unsigned long depth = 1);
+
+    void loadInput(double *input, ulong width, ulong height, ulong depth = 1);
     virtual void calculateOutput() = 0;
-    virtual double *getOutput(unsigned long &width, unsigned long &height);
-    
+    virtual double *getOutput(ulong &width, ulong &height);
+
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) = 0;
     void recalculateWeights();
-    
-    void reserveNeurons(unsigned long count);
+
+    void reserveNeurons(ulong count);
 };
 
 #endif /* layer_h */

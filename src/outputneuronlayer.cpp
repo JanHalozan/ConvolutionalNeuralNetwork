@@ -30,7 +30,7 @@ void sf::OutputNeuronLayer::calculateOutput()
     std::vector<double> input(this->inputWidth);
     input.assign(this->input, this->input + this->inputWidth);
     
-    unsigned long i = 0;
+    ulong i = 0;
     
     for (auto &n : *this->neurons)
     {
@@ -44,7 +44,7 @@ void sf::OutputNeuronLayer::calculateOutput()
 void sf::OutputNeuronLayer::backprop(sf::Layer *, sf::Layer *, sf::LayerBackpropInfo *info)
 {
     //Calculate the gradients and recalculate the output for each neuron in the output layer
-    unsigned long i = 0;
+    ulong i = 0;
     for (auto &n : *this->neurons)
     {
         double desiredOutput = info->currentSampleNumber == i ? 1.0 : 0.0;

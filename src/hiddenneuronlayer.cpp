@@ -8,7 +8,7 @@
 
 #include "hiddenneuronlayer.h"
 
-sf::HiddenNeuronLayer::HiddenNeuronLayer(unsigned long neuronsCount) : sf::Layer()
+sf::HiddenNeuronLayer::HiddenNeuronLayer(ulong neuronsCount) : sf::Layer()
 {
     this->type = kLayerTypeHiddenNeuron;
     this->reserveNeurons(neuronsCount);
@@ -26,7 +26,7 @@ void sf::HiddenNeuronLayer::calculateOutput()
         this->output = new double[this->outputWidth * this->outputHeight];
     }
     
-    unsigned long i = 0;
+    ulong i = 0;
     std::vector<double> input(this->input, this->input + this->inputWidth);
     
     for (sf::Neuron &n : *this->neurons)
@@ -39,7 +39,7 @@ void sf::HiddenNeuronLayer::calculateOutput()
 
 void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
 {
-    unsigned long i = 0;
+    ulong i = 0;
     
     for (auto &neuron : *this->neurons)
     {

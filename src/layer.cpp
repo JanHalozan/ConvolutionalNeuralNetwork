@@ -30,7 +30,7 @@ const std::vector<sf::Neuron> sf::Layer::getNeurons() const
     return *this->neurons;
 }
 
-void sf::Layer::loadInput(double *input, unsigned long width, unsigned long height, unsigned long depth)
+void sf::Layer::loadInput(double *input, ulong width, ulong height, ulong depth)
 {
     this->inputWidth = width;
     this->inputHeight = height;
@@ -38,7 +38,7 @@ void sf::Layer::loadInput(double *input, unsigned long width, unsigned long heig
     this->input = input;
 }
 
-double *sf::Layer::getOutput(unsigned long &width, unsigned long &height)
+double *sf::Layer::getOutput(ulong &width, ulong &height)
 {
     width = this->outputWidth;
     height = this->outputHeight;
@@ -52,7 +52,7 @@ void sf::Layer::recalculateWeights()
         n.recalculateWeights();
 }
 
-void sf::Layer::reserveNeurons(unsigned long count)
+void sf::Layer::reserveNeurons(ulong count)
 {
     if (this->neurons->size() != count)
     {

@@ -8,7 +8,7 @@
 
 #include "net.h"
 
-sf::Net::Net(unsigned long dataWidth, unsigned long dataHeight) : breakErrorLimit(0.01), breakEpochLimit(100000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
+sf::Net::Net(ulong dataWidth, ulong dataHeight) : breakErrorLimit(0.01), breakEpochLimit(100000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
 {
 }
 
@@ -37,16 +37,16 @@ void sf::Net::train()
     std::vector<int> uniqueClasses = this->trainingSampleClasses;
     std::sort(uniqueClasses.begin(), uniqueClasses.end());
     auto end = std::unique(uniqueClasses.begin(), uniqueClasses.end());
-    const unsigned long uniqueClassesCount = std::distance(uniqueClasses.begin(), end);
+    const ulong uniqueClassesCount = std::distance(uniqueClasses.begin(), end);
     
     sf::Layer *layer = this->layers.back();
     layer->reserveNeurons(uniqueClassesCount);
     
-    unsigned long epoch = 0;
+    ulong epoch = 0;
     
     do
     {
-        unsigned long sampleCounter = 0;
+        ulong sampleCounter = 0;
         double maxError = std::numeric_limits<double>::min();
         
         for (double *sample : this->trainingSamples)
@@ -56,7 +56,7 @@ void sf::Net::train()
             double *output = layeredOutput.back();
             
             //We want the response to be 1.0 of the output neuron for the class we'were training now and 0.0 for all others.
-            for (unsigned long i = 0; i < uniqueClassesCount; ++i)
+            for (ulong i = 0; i < uniqueClassesCount; ++i)
             {
                 double desiredResponse = sampleCounter == i ? 1.0 : 0.0;
                 double error = fabs(desiredResponse - output[i]);
@@ -114,8 +114,8 @@ std::vector<double *> sf::Net::calculateCompleteNetOutput(double *sample)
     std::vector<double *>layeredOutput;
     
     double *data = sample;
-    unsigned long width = this->inputDataWidth;
-    unsigned long height = this->inputDataHeight;
+    ulong width = this->inputDataWidth;
+    ulong height = this->inputDataHeight;
     
     for (auto layer : this->layers)
     {
@@ -131,8 +131,8 @@ std::vector<double *> sf::Net::calculateCompleteNetOutput(double *sample)
 double *sf::Net::calculateNetOutput(double *sample)
 {
     double *data = sample;
-    unsigned long width = this->inputDataWidth;
-    unsigned long height = this->inputDataHeight;
+    ulong width = this->inputDataWidth;
+    ulong height = this->inputDataHeight;
     
     for (auto layer : this->layers)
     {

@@ -38,8 +38,8 @@ public:
     void setZeroPaddingSize(unsigned char size);
     unsigned char getZeroPaddingSize() const;
     
-    void setOutputFeatureMapsCount(unsigned long count);
-    unsigned long getOutputFeatureMapsCount();
+    void setOutputFeatureMapsCount(ulong count);
+    ulong getOutputFeatureMapsCount();
 };
 
 #endif /* convolutionlayer_h */

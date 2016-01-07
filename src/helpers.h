@@ -9,6 +9,8 @@
 #ifndef helpers_h
 #define helpers_h
 
+typedef unsigned long ulong;
+
 #define DEBUG
 
 #ifdef DEBUG

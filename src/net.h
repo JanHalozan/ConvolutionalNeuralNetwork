@@ -31,7 +31,7 @@ class sf::Net
 {
 private:
     double breakErrorLimit;
-    unsigned long breakEpochLimit;
+    ulong breakEpochLimit;
     
     std::vector<sf::Layer *> layers;
     
@@ -42,10 +42,10 @@ private:
     std::vector<double *> calculateCompleteNetOutput(double *sample);
     
 public:
-    unsigned long inputDataWidth;
-    unsigned long inputDataHeight;
+    ulong inputDataWidth;
+    ulong inputDataHeight;
     
-    Net(unsigned long inputDataWidth, unsigned long inputDataHeight);
+    Net(ulong inputDataWidth, ulong inputDataHeight);
     ~Net();
     
     void addLayer(sf::Layer *layer);

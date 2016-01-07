@@ -18,8 +18,8 @@ void sf::ConvolutionLayer::calculateOutput()
     assert_log(ceil((this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (width)");
     assert_log(ceil((this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (height)");
     
-    unsigned long oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
-    unsigned long oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
+    ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
+    ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
     
     if (!(this->outputWidth == oWidth && this->outputHeight == oHeight))
     {
@@ -32,10 +32,10 @@ void sf::ConvolutionLayer::calculateOutput()
         this->output = new double[this->outputWidth * this->outputHeight];
     }
     
-    const unsigned long sliceSize = this->inputWidth * this->inputHeight;
-    const unsigned long outputSliceSize = this->outputWidth * this->outputHeight;
-    unsigned long outRow = 0;
-    unsigned long outCol = 0;
+    const ulong sliceSize = this->inputWidth * this->inputHeight;
+    const ulong outputSliceSize = this->outputWidth * this->outputHeight;
+    ulong outRow = 0;
+    ulong outCol = 0;
     
     for (long long row = -this->zeroPaddingSize; row < (signed)(this->inputHeight + this->zeroPaddingSize); row += this->stride)
     {
@@ -46,11 +46,11 @@ void sf::ConvolutionLayer::calculateOutput()
             {
                 std::vector<double> input(this->kernelSide * this->kernelSide * this->inputDepth);
                 
-                for (unsigned long lyr = 0; lyr < this->inputDepth; ++lyr)
+                for (ulong lyr = 0; lyr < this->inputDepth; ++lyr)
                 {
-                    for (unsigned long y = 0; y < this->kernelSide; ++y)
+                    for (ulong y = 0; y < this->kernelSide; ++y)
                     {
-                        for (unsigned long x = 0; x < this->kernelSide; ++x)
+                        for (ulong x = 0; x < this->kernelSide; ++x)
                         {
                             if (row < 0 || row >= (signed)this->inputHeight || col < 0 || col >= (signed)this->inputWidth)
                             {
@@ -113,13 +113,13 @@ unsigned char sf::ConvolutionLayer::getZeroPaddingSize() const
     return this->zeroPaddingSize;
 }
 
-void sf::ConvolutionLayer::setOutputFeatureMapsCount(unsigned long count)
+void sf::ConvolutionLayer::setOutputFeatureMapsCount(ulong count)
 {
     this->reserveNeurons(count);
     this->outputDepth = count;
 }
 
-unsigned long sf::ConvolutionLayer::getOutputFeatureMapsCount()
+ulong sf::ConvolutionLayer::getOutputFeatureMapsCount()
 {
     return this->outputDepth;
 }

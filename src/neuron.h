@@ -43,7 +43,7 @@ public:
     Neuron();
     
     void randomizeWeights();
-    double getWeight(unsigned long index) const;
+    double getWeight(ulong index) const;
     
     void loadInput(std::vector<double> input);
     void calculateOutput();

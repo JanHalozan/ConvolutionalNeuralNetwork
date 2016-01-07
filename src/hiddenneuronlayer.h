@@ -21,7 +21,7 @@ class sf::HiddenNeuronLayer : public sf::Layer
 private:
     
 public:
-    HiddenNeuronLayer(unsigned long neuronsCount);
+    HiddenNeuronLayer(ulong neuronsCount);
     
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
