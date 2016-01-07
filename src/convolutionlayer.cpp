@@ -8,10 +8,9 @@
 
 #include "convolutionlayer.h"
 
-sf::ConvolutionLayer::ConvolutionLayer(unsigned long depth) : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0)
+sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0)
 {
     this->type = kLayerTypeConvolutional;
-    this->reserveNeurons(depth);
 }
 
 void sf::ConvolutionLayer::calculateOutput()
@@ -112,4 +111,15 @@ void sf::ConvolutionLayer::setZeroPaddingSize(unsigned char size)
 unsigned char sf::ConvolutionLayer::getZeroPaddingSize() const
 {
     return this->zeroPaddingSize;
+}
+
+void sf::ConvolutionLayer::setOutputFeatureMapsCount(unsigned long count)
+{
+    this->reserveNeurons(count);
+    this->outputDepth = count;
+}
+
+unsigned long sf::ConvolutionLayer::getOutputFeatureMapsCount()
+{
+    return this->outputDepth;
 }

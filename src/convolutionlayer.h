@@ -19,8 +19,6 @@ namespace sf
 class sf::ConvolutionLayer : public sf::Layer
 {
 private:
-    ConvolutionLayer(unsigned long depth);
-    
     unsigned short stride;
     unsigned short kernelSide;
     unsigned char zeroPaddingSize;
@@ -39,6 +37,9 @@ public:
     
     void setZeroPaddingSize(unsigned char size);
     unsigned char getZeroPaddingSize() const;
+    
+    void setOutputFeatureMapsCount(unsigned long count);
+    unsigned long getOutputFeatureMapsCount();
 };
 
 #endif /* convolutionlayer_h */

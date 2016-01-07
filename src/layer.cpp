@@ -30,10 +30,11 @@ const std::vector<sf::Neuron> sf::Layer::getNeurons() const
     return *this->neurons;
 }
 
-void sf::Layer::loadInput(double *input, unsigned long width, unsigned long height)
+void sf::Layer::loadInput(double *input, unsigned long width, unsigned long height, unsigned long depth)
 {
     this->inputWidth = width;
     this->inputHeight = height;
+    this->inputDepth = depth;
     this->input = input;
 }
 

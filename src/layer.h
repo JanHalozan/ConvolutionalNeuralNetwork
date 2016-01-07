@@ -60,7 +60,7 @@ public:
     sf::LayerType getType();
     const std::vector<sf::Neuron> getNeurons() const;
     
-    void loadInput(double *input, unsigned long width, unsigned long height);
+    void loadInput(double *input, unsigned long width, unsigned long height, unsigned long depth = 1);
     virtual void calculateOutput() = 0;
     virtual double *getOutput(unsigned long &width, unsigned long &height);
     
