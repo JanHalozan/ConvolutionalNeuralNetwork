@@ -8,7 +8,7 @@
 
 #include "layer.h"
 
-sf::Layer::Layer() : inputWidth(0), inputHeight(0)
+sf::Layer::Layer() : inputWidth(0), inputHeight(0), inputDepth(0)
 {
     this->output = nullptr;
     this->input = nullptr;
@@ -38,10 +38,11 @@ void sf::Layer::loadInput(double *input, ulong width, ulong height, ulong depth)
     this->input = input;
 }
 
-double *sf::Layer::getOutput(ulong &width, ulong &height)
+double *sf::Layer::getOutput(ulong &width, ulong &height, ulong &depth)
 {
     width = this->outputWidth;
     height = this->outputHeight;
+    depth = this->outputDepth;
     
     return this->output;
 }

@@ -62,7 +62,7 @@ public:
 
     void loadInput(double *input, ulong width, ulong height, ulong depth = 1);
     virtual void calculateOutput() = 0;
-    virtual double *getOutput(ulong &width, ulong &height);
+    virtual double *getOutput(ulong &width, ulong &height, ulong &depth);
 
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) = 0;
     void recalculateWeights();

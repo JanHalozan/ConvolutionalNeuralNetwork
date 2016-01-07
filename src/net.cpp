@@ -8,7 +8,7 @@
 
 #include "net.h"
 
-sf::Net::Net(ulong dataWidth, ulong dataHeight) : breakErrorLimit(0.01), breakEpochLimit(100000), inputDataWidth(dataWidth), inputDataHeight(dataHeight)
+sf::Net::Net(ulong dataWidth, ulong dataHeight, ulong dataDepth) : breakErrorLimit(0.01), breakEpochLimit(100000), inputDataWidth(dataWidth), inputDataHeight(dataHeight), inputDataDepth(dataDepth)
 {
 }
 
@@ -116,12 +116,13 @@ std::vector<double *> sf::Net::calculateCompleteNetOutput(double *sample)
     double *data = sample;
     ulong width = this->inputDataWidth;
     ulong height = this->inputDataHeight;
+    ulong depth = this->inputDataDepth;
     
     for (auto layer : this->layers)
     {
-        layer->loadInput(data, width, height);
+        layer->loadInput(data, width, height, depth);
         layer->calculateOutput();
-        data = layer->getOutput(width, height);
+        data = layer->getOutput(width, height, depth);
         layeredOutput.push_back(data);
     }
     
@@ -133,12 +134,13 @@ double *sf::Net::calculateNetOutput(double *sample)
     double *data = sample;
     ulong width = this->inputDataWidth;
     ulong height = this->inputDataHeight;
+    ulong depth = this->inputDataDepth;
     
     for (auto layer : this->layers)
     {
-        layer->loadInput(data, width, height);
+        layer->loadInput(data, width, height, depth);
         layer->calculateOutput();
-        data = layer->getOutput(width, height);
+        data = layer->getOutput(width, height, depth);
     }
     
     return data;

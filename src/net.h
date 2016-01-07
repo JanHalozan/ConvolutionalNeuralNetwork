@@ -44,8 +44,9 @@ private:
 public:
     ulong inputDataWidth;
     ulong inputDataHeight;
+    ulong inputDataDepth;
     
-    Net(ulong inputDataWidth, ulong inputDataHeight);
+    Net(ulong inputDataWidth, ulong inputDataHeight, ulong inputDataDepth = 1);
     ~Net();
     
     void addLayer(sf::Layer *layer);

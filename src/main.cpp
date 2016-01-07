@@ -113,8 +113,8 @@ int main(int argc, char const *argv[])
     layer->loadInput(data, 4, 4);
     layer->calculateOutput();
     
-    unsigned long w, h;
-    double *res = layer->getOutput(w, h);
+    unsigned long w, h, d;
+    double *res = layer->getOutput(w, h, d);
     assert(w == 2);
     assert(h == 2);
     assert(res[0] == 7);
