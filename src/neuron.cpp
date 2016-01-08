@@ -14,13 +14,13 @@ sf::Neuron::Neuron() : activationType(kNeuronActivationFunctionTypeSig), output(
 {
 }
 
-void sf::Neuron::randomizeWeights()
+void sf::Neuron::randomizeWeights(long count)
 {
 #ifndef DEBUG
     srand((unsigned)time(NULL));
 #endif
     
-    for (ulong i = 0; i < this->inputs.size(); ++i)
+    for (long i = 0; i < count; ++i)
     {
         double weight = (rand() / (double)RAND_MAX) - 0.5;
         this->weights.push_back(weight);
@@ -39,17 +39,16 @@ void sf::Neuron::loadInput(std::vector<double> input)
     
     //It's probably a first time load
     if (this->weights.size() == 0)
-        this->randomizeWeights();
+        this->randomizeWeights(this->inputs.size());
 }
 
 void sf::Neuron::calculateOutput()
 {
-    assert_log(this->inputs.size() == this->weights.size(), "Weights and inputs not the same.");
-    
     switch (this->activationType)
     {
         case kNeuronActivationFunctionTypeSig:
         {
+            assert_log(this->inputs.size() == this->weights.size(), "Weights and inputs not the same.");
             double sum = 0.0;
             
             for (ulong i = 0; i < this->inputs.size(); ++i)
@@ -69,8 +68,10 @@ void sf::Neuron::calculateOutput()
             
             for (ulong i = 0; i < this->inputs.size(); ++i)
             {
-                sum += this->inputs[i] * this->weights[(i % kernelSize) + 1];
+                sum += this->inputs[i + 1] * this->weights[(i % kernelSize) + 1];
             }
+            
+//            sum += this->inputs[0]; //Bias
             
             this->output = 1.0 / (1 + exp(-sum));
         }

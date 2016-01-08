@@ -18,34 +18,34 @@ void sf::ConvolutionLayer::calculateOutput()
     assert_log(ceil((this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (width)");
     assert_log(ceil((this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (height)");
     
-    ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
-    ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride;
+    ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
+    ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
     
     if (!(this->outputWidth == oWidth && this->outputHeight == oHeight))
     {
         if (this->output != nullptr)
             delete[] this->output;
         
-        this->outputDepth = this->inputDepth;
         this->outputWidth = oWidth;
         this->outputHeight = oHeight;
-        this->output = new double[this->outputWidth * this->outputHeight];
+        this->output = new double[this->outputWidth * this->outputHeight * this->outputDepth];
     }
     
     const ulong sliceSize = this->inputWidth * this->inputHeight;
     const ulong outputSliceSize = this->outputWidth * this->outputHeight;
     ulong outRow = 0;
     ulong outCol = 0;
+    ulong outLyr = 0;
     
-    for (long long row = -this->zeroPaddingSize; row < (signed)(this->inputHeight + this->zeroPaddingSize); row += this->stride)
+    for (long long row = -this->zeroPaddingSize; row < (signed)(this->inputHeight - this->kernelSide + this->zeroPaddingSize + 1); row += this->stride)
     {
-        for (long long col = -this->zeroPaddingSize; col < (signed)(this->inputWidth + this->zeroPaddingSize); col += this->stride)
+        for (long long col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
         {
-            unsigned short depth = 0;
+            
             for (auto &neuron : *this->neurons)
             {
                 std::vector<double> input(this->kernelSide * this->kernelSide * this->inputDepth);
-                
+                ulong i = 0;
                 for (ulong lyr = 0; lyr < this->inputDepth; ++lyr)
                 {
                     for (ulong y = 0; y < this->kernelSide; ++y)
@@ -59,7 +59,7 @@ void sf::ConvolutionLayer::calculateOutput()
                             }
                             
                             double val = this->input[(col + x) + ((row + y) * this->inputWidth) + (lyr * sliceSize)];
-                            input.push_back(val);
+                            input[i++] = val;
                         }
                     }
                 }
@@ -67,12 +67,13 @@ void sf::ConvolutionLayer::calculateOutput()
                 neuron.loadInput(input);
                 neuron.calculateOutput();
                 
-                this->output[outCol + (outRow * this->outputWidth) + (outputSliceSize * depth)] = neuron.getOutput();
-                
+                this->output[outCol + (outRow * this->outputWidth) + (outputSliceSize * outLyr)] = neuron.getOutput();
+
                 ++outCol;
                 outRow += outCol / this->outputWidth;
+                outLyr += (outRow / this->outputHeight) * (outCol / this->outputWidth);
                 outCol %= this->outputWidth;
-                ++depth;
+                outRow %= this->outputHeight;
             }
         }
     }
@@ -81,6 +82,17 @@ void sf::ConvolutionLayer::calculateOutput()
 void sf::ConvolutionLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info)
 {
     
+}
+
+void sf::ConvolutionLayer::reserveNeurons(ulong count)
+{
+    Layer::reserveNeurons(count);
+    
+    //+1 for the bias weight
+    ulong square = this->kernelSide * this->kernelSide + 1;
+    
+    for (sf::Neuron &n : *this->neurons)
+        n.randomizeWeights(square);
 }
 
 void sf::ConvolutionLayer::setStride(unsigned short stride)
@@ -95,6 +107,12 @@ unsigned short sf::ConvolutionLayer::getStride() const
 
 void sf::ConvolutionLayer::setKernelSideSize(unsigned short size)
 {
+    //+1 for the bias weight
+    ulong square = size * size + 1;
+    
+    for (sf::Neuron &n : *this->neurons)
+        n.randomizeWeights(square);
+    
     this->kernelSide = size;
 }
 
@@ -115,8 +133,8 @@ unsigned char sf::ConvolutionLayer::getZeroPaddingSize() const
 
 void sf::ConvolutionLayer::setOutputFeatureMapsCount(ulong count)
 {
-    this->reserveNeurons(count);
     this->outputDepth = count;
+    this->reserveNeurons(count);
 }
 
 ulong sf::ConvolutionLayer::getOutputFeatureMapsCount()

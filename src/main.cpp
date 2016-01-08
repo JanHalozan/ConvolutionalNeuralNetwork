@@ -29,6 +29,7 @@ int main(int argc, char const *argv[])
 //        
 //        Net *net = new Net(3, 1);
 //        net->addLayer(new HiddenNeuronLayer(4));
+//        net->addLayer(new HiddenNeuronLayer(4));
 //        net->addLayer(new OutputNeuronLayer());
 //        
 //        net->addTrainingSample(sample1, 0);
@@ -51,20 +52,36 @@ int main(int argc, char const *argv[])
 //    }
     
     {
+        
         using namespace sf;
         
         ConvolutionLayer *layer = new ConvolutionLayer();
-        double input[] = {1, 2, 3, 4, 4, 3, 2, 1, 5, 6, 7, 8};
-        srand(2);
-        layer->loadInput(input, 2, 2, 3);
+        double input[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 2, 3};//2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1};
+        for (unsigned long i = 0; i < sizeof(input) / sizeof(double); ++i)
+            input[i] /= 10.0;
+        
+        layer->loadInput(input, 3, 3, 2);
         layer->setOutputFeatureMapsCount(2);
         layer->calculateOutput();
         
         unsigned long w, h, d;
         double *out = layer->getOutput(w, h, d);
         
-        for (int i = 0; i < w * h * d; ++i)
+        for (ulong z = 0; z < d; ++z)
+        {
+            for (ulong y = 0; y < h; ++y)
+            {
+                for (ulong x = 0; x < w; ++x)
+                    std::cout << out[x + y * w + z * w * h] << ", ";
+                std::cout << std::endl;
+            }
+            std::cout << std::endl << "----------" << std::endl;
+        }
+        
+        for (auto i = 0; i < w * h * d; ++i)
             std::cout << out[i] << ", ";
+        
+        std::cout << std::endl;
     }
     
 //    This example was used for debugging backprop

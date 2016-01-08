@@ -67,7 +67,7 @@ public:
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) = 0;
     void recalculateWeights();
 
-    void reserveNeurons(ulong count);
+    virtual void reserveNeurons(ulong count);
 };
 
 #endif /* layer_h */
