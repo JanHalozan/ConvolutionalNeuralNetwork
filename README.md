@@ -1,12 +1,26 @@
 ##ConvolutionalNeuralNetwork
 
-A general purpose convolutional neural network for classification.
+A general purpose convolutional neural network.
 
-**Under construction.** This network it currently under development and expected to be finished soon. I will also write a blog post about every single step of the way. Stay tuned.
+**Under construction. This network it currently under development and expected to be finished soon.**  
+When finished I will write a blog post on how to write the thing from scratch yourself. Feel free to _star_ the repo.
 
-####Usage
+###About
 
-The network has a layered design which allows different configurations of how many layers and what layer types should be stacked together. The usage should be similar to:
+This project is a simple to use general purpose convolutional neural network framework. It features several types of layers which can be linked together as they are needed. Written in C++ which allows it to run blazingly fast and stay extremely portable (it has no dependencies).
+
+###Usage
+
+The network has a layered design which allows different configurations of how many layers and what layer types should be stacked together.
+
+There are four types of layers:
+
+- **Convolution**. The convolution layer will perform the main feature extraction for the provided sample.
+- **Pooling**. The pooling layer performs a downsampling of the input by the factor of `filterSize` (defaults to 2) and with a stride provided in `stride` (defaults to 2). So the default downsampling is equal to 2x2.
+- **Hidden**. The hidden layer is a layer of a regular multi layer perceptron. It's only difference from the output layer is the way it computes its backpropagation gradients.
+- **Output layer**. The final layer. There are no hyperparameters to specify, just make sure you end the network with an output layer.
+
+A fancy ASCII art of the network structure:
 
 ```
 +-------------------+---------------+-----+--------------+-----+--------------+
@@ -14,41 +28,49 @@ The network has a layered design which allows different configurations of how ma
 +-------------------+---------------+-----+--------------+-----+--------------+
 ```
 
-The convolution & pooling layer combinations are optional and if one uses just some hidden layers and the output layer the network becomes a regular multilayer perceptron. The pooling layer itself is also optional but practice has shown that the network gives better results when pooling layers are used (spatial invariance).
+The convolution & pooling layer combinations are optional and there are no restrictions on how many there can be. If no conv & pooling layers are present the netowrk behaves line a regular multilayer perceptron. While the pooling layer itself is also optional it is recommended since the network yields better results when used (spatial invariance).
 
-Types of layers:
+#####Code
 
-- Convolution. The convolution layer will perform the main feature extraction for the provided sample. Each layer must have a pre-defined number of different feature extractor (the depth).
-- Pooling. The pooling layer performs a downsampling of the input by the factor of `filterSize` (defaults to 2) and with a stride provided in `stride` (defaults to 2). So the default downsampling is equal to 2x2.
-- Hidden. The hidden layer is a layer of a regular multi layer perceptron. It's only difference from the output layer is the way it computes its backpropagation gradients.
-- Output layer. The final layer. There are no hyperparameters to specify, just make sure you end the network with an output layer.
-
-**Code**
-Here's what an example might look like (will probably change as I get more and more stuff done):
+Here's what an example might look like (so far only the MLP part is working):
 
 ```c++
+using namespace sf;
 
-const unsigned long inputWidth = 32; //The dimension of your input. This example uses a 32x32 "pixels" input.
-const unsigned long inputHeight = 32; //You can also specify a 1D input by setting the height equal to 1.
+const unsigned long inputWidth = 3;
+const unsigned long inputHeight = 1;
+
+//A bunch of samples. The 1 & 2 are similar so are 3 & 4 and 5 & 6. 
+double sample1[] = {1.0, 0.2, 0.1};
+double sample2[] = {0.8, 0.1, 0.25};
+double sample3[] = {0.2, 0.95, 0.1};
+double sample4[] = {0.11, 0.9, 0.13};
+double sample5[] = {0.0, 0.2, 0.91};
+double sample6[] = {0.21, 0.12, 1.0};
+
+//A new network with the given data width and height
 Net *net = new Net(inputWidth, inputHeight);
+net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
+net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
+net->addLayer(new OutputNeuronLayer()); //An output layer
 
-// net->addLayer(new ConvolutionLayer()); WORK IN PROGRESS. I still have to decide which hyperparameters to specify here.
-// net->addLayer(new PoolingLayer()); WORK IN PROGRESS.
+//Add the samples
+net->addTrainingSample(sample1, 0); //Sample 1 & 2 belong to class 0 (first index of the output array)
+net->addTrainingSample(sample2, 0);
+net->addTrainingSample(sample3, 1); //Sample 3 & 5 belong to class 2 (second index of the output array)
+net->addTrainingSample(sample4, 1);
+net->addTrainingSample(sample5, 2); //Sample 5 & 6 belong to class 3 (third index of the output array)
+net->addTrainingSample(sample6, 2);
 
-// net->addLayer(new HiddenNeuronLayer()); WORK IN PROGRESS.
-net->addLayer(new OutputNeuronLayer());
+//And now we play the waiting game
+net->train();
 
-for (auto sample : mySamplesVector)
-{
-    net->addTrainingSample(sample.data, sample.classNumber);
-}
+//This example input is very similar to the sample 1 and 2 so we expect our output to have a value
+//close to 1 for class 0 and a value close to 0 for other classes.
 
-net->train(); //And now we play the waiting game.
-
-double *output = net->classifySample(testSample.data);
-
-std::cout << "Classification restults: ";
-for (unsigned short i = 0; i < differentClassesCount; ++i)
+double example[] = {1.0, 0.2, 0.11};
+double *output = net->classifySample(example);
+for (int i = 0; i < 3; ++i)
     std::cout << output[i] << ", ";
 
 ```
