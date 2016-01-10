@@ -7,7 +7,7 @@ When finished I will write a blog post on how to write the thing from scratch yo
 
 ###About
 
-This project is a simple to use general purpose convolutional neural network framework. It features several types of layers which can be linked together as they are needed. Written in C++ which allows it to run blazingly fast and stay extremely portable (it has no dependencies).
+This project is a simple to use general purpose convolutional neural network framework. It features several types of layers which can be linked together as they are needed. Written in C++ which allows it to run blazingly fast (not just yet) and stay extremely portable (it has no dependencies).
 
 ###Usage
 
@@ -57,9 +57,9 @@ net->addLayer(new OutputNeuronLayer()); //An output layer
 //Add the samples
 net->addTrainingSample(sample1, 0); //Sample 1 & 2 belong to class 0 (first index of the output array)
 net->addTrainingSample(sample2, 0);
-net->addTrainingSample(sample3, 1); //Sample 3 & 5 belong to class 2 (second index of the output array)
+net->addTrainingSample(sample3, 1); //Sample 3 & 5 belong to class 1 (second index of the output array)
 net->addTrainingSample(sample4, 1);
-net->addTrainingSample(sample5, 2); //Sample 5 & 6 belong to class 3 (third index of the output array)
+net->addTrainingSample(sample5, 2); //Sample 5 & 6 belong to class 2 (third index of the output array)
 net->addTrainingSample(sample6, 2);
 
 //And now we play the waiting game
@@ -67,7 +67,6 @@ net->train();
 
 //This example input is very similar to the sample 1 and 2 so we expect our output to have a value
 //close to 1 for class 0 and a value close to 0 for other classes.
-
 double example[] = {1.0, 0.2, 0.11};
 double *output = net->classifySample(example);
 for (int i = 0; i < 3; ++i)
@@ -78,3 +77,20 @@ for (int i = 0; i < 3; ++i)
 ####Building it
 
 You can open it using Xcode or just `make build`. To toggle debug mode (exposes all private properties, ...) just update the `#define DEBUG` flag in the `helpers.h`.
+
+###TODO
+
+Things to come (in order):  
+- [ ] Finish `PoolingLayer` backpropagation
+- [ ] Finish `ConvolutionLayer` backpropagation
+- [ ] A few tweaks here and there
+- [ ] Release alpha version
+- [ ] Merge `OutputNeuronLayer` and `HiddenNeuronLayer`
+- [ ] Refactor to C++14 (no raw pointers, ...)
+- [ ] Finish various TODOs (code comments)
+- [ ] Release beta version  
+After this point I don't have a concrete plan of what to do next. Here are some things I'm considering:
+- [ ] Speed it up
+- [ ] CUDA support
+- [ ] Add tests :>
+- [ ] ???
