@@ -35,7 +35,7 @@ double sf::Neuron::getWeight(ulong index) const
 void sf::Neuron::loadInput(std::vector<double> input)
 {
     this->inputs = input;
-    this->inputs.insert(this->inputs.begin(), -1.0); //We subtract the bias in sigmoid activation
+    this->inputs.insert(this->inputs.begin(), 1.0); //We add the bias in sigmoid activation
     
     //It's probably a first time load
     if (this->weights.size() == 0)
@@ -81,8 +81,20 @@ double sf::Neuron::getOutput() const
 
 void sf::Neuron::recalculateWeights()
 {
-    for (ulong i = 0; i < this->inputs.size(); ++i)
-        this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
+    switch (this->activationType)
+    {
+        case kNeuronActivationFunctionTypeSig:
+        {
+            for (ulong i = 0; i < this->inputs.size(); ++i)
+                this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
+        }
+            break;
+        case kNeuronActivationFunctionTypeConvolution:
+        {
+            
+        }
+            break;
+    }
 }
 
 void sf::Neuron::setGradient(double g)

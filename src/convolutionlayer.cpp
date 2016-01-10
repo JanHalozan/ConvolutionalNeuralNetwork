@@ -8,6 +8,8 @@
 
 #include "convolutionlayer.h"
 
+#include "poolinglayer.h"
+
 sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0)
 {
     this->type = kLayerTypeConvolutional;
@@ -78,9 +80,36 @@ void sf::ConvolutionLayer::calculateOutput()
     }
 }
 
-void sf::ConvolutionLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info)
+void sf::ConvolutionLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
 {
+//    for (ulong i = 0; i < this->inputs.size(); ++i)
+//        sum += this->inputs[i + 1] * this->weights[(i % kernelSize) + 1];
+    sf::PoolingLayer *layer = (sf::PoolingLayer *)nextLayer;
     
+    auto kernelSize = this->kernelSide * this->kernelSide;
+    auto outputSliceSize = this->outputWidth * this->outputHeight;
+    
+    for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
+    {
+        for (ulong row = 0; row < this->outputHeight; ++row)
+        {
+            for (ulong col = 0; col < this->outputWidth; ++col)
+            {
+                double gradient = layer->getGradients()[col + (row * this->outputWidth) + (lyr * outputSliceSize)];
+                if (gradient == 0.0)
+                    continue;
+                
+                
+            }
+        }
+        for (sf::Neuron &n : *this->neurons)
+        {
+            for (unsigned short i = 0; i < kernelSize; ++i)
+            {
+                n.getWeight(i);
+            }
+        }
+    }
 }
 
 void sf::ConvolutionLayer::reserveNeurons(ulong count)
@@ -88,10 +117,10 @@ void sf::ConvolutionLayer::reserveNeurons(ulong count)
     Layer::reserveNeurons(count);
     
     //+1 for the bias weight
-    ulong square = this->kernelSide * this->kernelSide + 1;
+    const ulong inputCount = this->kernelSide * this->kernelSide + 1;
     
     for (sf::Neuron &n : *this->neurons)
-        n.randomizeWeights(square);
+        n.randomizeWeights(inputCount);
 }
 
 void sf::ConvolutionLayer::setStride(unsigned short stride)
@@ -106,13 +135,13 @@ unsigned short sf::ConvolutionLayer::getStride() const
 
 void sf::ConvolutionLayer::setKernelSideSize(unsigned short size)
 {
+    this->kernelSide = size;
+    
     //+1 for the bias weight
-    ulong square = size * size + 1;
+    const ulong inputCount = this->kernelSide * this->kernelSide + 1;
     
     for (sf::Neuron &n : *this->neurons)
-        n.randomizeWeights(square);
-    
-    this->kernelSide = size;
+        n.randomizeWeights(inputCount);
 }
 
 unsigned short sf::ConvolutionLayer::getKernelSideSize() const
