@@ -24,9 +24,11 @@ private:
     
     //Holds indexes that were selected during a forward pass so that we can backprop correctly
     unsigned char *selectedFilterIndexes;
+    double *gradients;
     
 public:
     PoolingLayer();
+    ~PoolingLayer();
 
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
