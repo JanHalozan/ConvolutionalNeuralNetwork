@@ -41,7 +41,6 @@ void sf::ConvolutionLayer::calculateOutput()
     {
         for (long long col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
         {
-            
             for (auto &neuron : *this->neurons)
             {
                 std::vector<double> input(this->kernelSide * this->kernelSide * this->inputDepth);

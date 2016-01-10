@@ -31,7 +31,6 @@ namespace sf
     {
         ulong samplesCount;
         ulong currentSampleNumber;
-
     };
 }
 

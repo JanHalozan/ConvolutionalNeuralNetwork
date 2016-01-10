@@ -35,7 +35,7 @@ double sf::Neuron::getWeight(ulong index) const
 void sf::Neuron::loadInput(std::vector<double> input)
 {
     this->inputs = input;
-    this->inputs.insert(this->inputs.begin(), -1);
+    this->inputs.insert(this->inputs.begin(), -1.0); //We subtract the bias in sigmoid activation
     
     //It's probably a first time load
     if (this->weights.size() == 0)
@@ -52,26 +52,21 @@ void sf::Neuron::calculateOutput()
             double sum = 0.0;
             
             for (ulong i = 0; i < this->inputs.size(); ++i)
-            {
-                double tmp = this->inputs[i] * this->weights[i];
-                sum += tmp;
-            }
+                sum += this->inputs[i] * this->weights[i];
             
             this->output = 1.0 / (1 + exp(-sum));
         }
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
-#warning check if the kernel should be flipped
             const ulong kernelSize = this->weights.size() - 1;
             double sum = 0.0;
             
+            //weights[0] contain the bias
             for (ulong i = 0; i < this->inputs.size(); ++i)
-            {
                 sum += this->inputs[i + 1] * this->weights[(i % kernelSize) + 1];
-            }
             
-//            sum += this->inputs[0]; //Bias
+            sum += this->inputs[0]; //Bias
             
             this->output = 1.0 / (1 + exp(-sum));
         }
