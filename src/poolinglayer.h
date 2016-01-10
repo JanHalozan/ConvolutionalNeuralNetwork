@@ -19,7 +19,6 @@ namespace sf
 class sf::PoolingLayer : public sf::Layer
 {
 private:
-    ulong filterSize;
     unsigned short stride;
     
     //Holds indexes that were selected during a forward pass so that we can backprop correctly

@@ -8,11 +8,9 @@
 
 #include "poolinglayer.h"
 
-sf::PoolingLayer::PoolingLayer() : Layer(), gradients(nullptr)
+sf::PoolingLayer::PoolingLayer() : Layer(), stride(2), gradients(nullptr)
 {
     this->type = sf::kLayerTypePooling;
-    this->filterSize = 2;
-    this->stride = 2;
 }
 
 sf::PoolingLayer::~PoolingLayer()
@@ -26,8 +24,8 @@ void sf::PoolingLayer::calculateOutput()
     assert_log(this->input != nullptr, "No input");
     
     //TODO: Check that this is valid (must return integer, ...)
-    ulong width = this->inputWidth / this->filterSize;
-    ulong height = this->inputHeight / this->filterSize;
+    ulong width = this->inputWidth / this->stride;
+    ulong height = this->inputHeight / this->stride;
     
     if (!(this->outputWidth == width && this->outputHeight == height))
     {
@@ -37,13 +35,13 @@ void sf::PoolingLayer::calculateOutput()
         this->outputWidth = width;
         this->outputHeight = height;
         this->outputDepth = this->inputDepth;
-        
-        ulong size = this->outputWidth * this->outputHeight;
+        const ulong size = this->outputWidth * this->outputHeight * this->outputDepth;
         this->output = new double[size];
         this->selectedFilterIndexes = new unsigned char[size];
     }
     
-    ulong outputSliceSize = this->outputWidth * this->outputHeight;
+    const ulong inputSliceSize = this->inputWidth * this->inputHeight;
+    const ulong outputSliceSize = this->outputWidth * this->outputHeight;
     ulong outRow = 0;
     ulong outCol = 0;
     ulong outLyr = 0;
@@ -55,28 +53,34 @@ void sf::PoolingLayer::calculateOutput()
         {
             for (ulong col = 0; col < this->inputWidth; col += this->stride)
             {
-                double max = this->input[row * this->inputWidth + col];
+                //TODO: This thing does a fixed stride = 2 computation. Make it universal.
+                const ulong depth = lyr * inputSliceSize;
+                ulong index = col + (row * this->inputWidth) + depth;
+                double max = this->input[index];
                 unsigned char selectedMaxIndex = 0;
                 
-                if (this->input[row * this->inputWidth + col + 1] > max)
+                index = (col + 1) + (row * this->inputWidth) + depth;
+                if (this->input[index] > max)
                 {
                     max = this->input[row * this->inputWidth + col + 1];
                     selectedMaxIndex = 1;
                 }
                 
-                if (this->input[(row + 1) * this->inputWidth + col] > max)
+                index = col + ((row + 1) * this->inputWidth) + depth;
+                if (this->input[index] > max)
                 {
-                    max = this->input[(row + 1) * this->inputWidth + col];
+                    max = this->input[index];
                     selectedMaxIndex = 2;
                 }
                 
-                if (this->input[(row + 1) * this->inputWidth + col + 1] > max)
+                index = (col + 1) + ((row + 1) * this->inputWidth) + depth;
+                if (this->input[index] > max)
                 {
-                    max = this->input[(row + 1) * this->inputWidth + col + 1];
+                    max = this->input[index];
                     selectedMaxIndex = 3;
                 }
                 
-                auto index = outCol + (outRow * this->outputWidth) + (outputSliceSize * outLyr);
+                index = outCol + (outRow * this->outputWidth) + (outLyr * outputSliceSize);
                 this->output[index] = max;
                 this->selectedFilterIndexes[index] = selectedMaxIndex;
                 
@@ -92,8 +96,34 @@ void sf::PoolingLayer::calculateOutput()
 
 void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
 {
+    const auto totalInputSize = this->inputWidth * this->inputHeight * this->inputDepth;
+    
     if (this->gradients == nullptr)
+        this->gradients = new double[totalInputSize];
+    
+    const ulong outputSliceSize = this->outputWidth * this->outputHeight;
+    
+    //Reset the entire gradient map
+    memset(this->gradients, 0.0, totalInputSize);
+    
+    for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
     {
-        this->gradients = new double[this->outputWidth * this->outputHeight * this->outputDepth];
+        for (ulong row = 0; row < this->outputHeight; ++row)
+        {
+            for (ulong col = 0; col < this->outputWidth; ++col)
+            {
+                auto index = col + (row * this->outputWidth) * (lyr * outputSliceSize);
+                const auto gradient = nextLayer->neurons->at(index).getGradient();
+                const auto routeIndex = this->selectedFilterIndexes[index];
+                
+                //Start index of the gradient frame
+                ulong gradientIndex = (col * this->stride) + (row * this->outputWidth * this->stride) + (lyr * outputSliceSize);
+                const ulong gradientCol = routeIndex % this->stride;
+                const ulong gradientRow = routeIndex / this->stride;
+                gradientIndex += gradientCol + (gradientRow * this->inputWidth);
+                
+                this->gradients[gradientIndex] = gradient;
+            }
+        }
     }
 }
