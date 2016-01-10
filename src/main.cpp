@@ -15,6 +15,55 @@
 
 int main(int argc, char const *argv[])
 {
+    {
+        using namespace sf;
+        
+        PoolingLayer *layer = new PoolingLayer();
+        double input[] = {6, 2, 3, 8, 5, 1, 7, 4, 9, 10, 11, 12, 14, 13, 15, 16};
+        layer->loadInput(input, 4, 2, 2);
+        layer->calculateOutput();
+        unsigned long w, h, d;
+        double *out = layer->getOutput(w, h, d);
+        
+        for (ulong z = 0; z < d; ++z)
+        {
+            for (ulong y = 0; y < h; ++y)
+            {
+                for (ulong x = 0; x < w; ++x)
+                    std::cout << out[x + y * w + z * w * h] << ", ";
+                std::cout << std::endl;
+            }
+            std::cout << std::endl << "----------" << std::endl;
+        }
+        
+        std::cout << std::endl;
+        std::cout << std::endl;
+        
+        //Hack together a layer which will be used for routing the gradients
+        HiddenNeuronLayer *propLayer = new HiddenNeuronLayer(4);
+        propLayer->neurons->at(0).setGradient(2);
+        propLayer->neurons->at(1).setGradient(1);
+        propLayer->neurons->at(2).setGradient(8);
+        propLayer->neurons->at(3).setGradient(3);
+        
+        layer->backprop(nullptr, propLayer, nullptr);
+        double *gradients = layer->gradients;
+        
+        for (int i = 0; i < 2; ++i)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                for (int k = 0; k < 4; ++k)
+                    std::cout << gradients[k + j * 4 + i * 8] << ", ";
+                std::cout << std::endl;
+            }
+            std::cout << std::endl << "----------" << std::endl;
+        }
+        
+        return 0;
+    }
+    
+    
 //    //A really really really simple example of a MLP. Samples 1 & 2 are similar, so are 3 & 4 and 5 & 6. When the net is trained we feed it an example
 //    // similar to first two samples and if the answer is class 0 then the MLP is working correctly.
 //    {
@@ -45,44 +94,44 @@ int main(int argc, char const *argv[])
 //        double *output = net->classifySample(example);
 //        for (int i = 0; i < 3; ++i)
 //            std::cout << output[i] << ", ";
-//        
+//
 //        std::cout << std::endl;
 //        
 //        return 0;
 //    }
     
-    {
-        
-        using namespace sf;
-        
-        ConvolutionLayer *layer = new ConvolutionLayer();
-        double input[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 2, 3};//2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1};
-        for (unsigned long i = 0; i < sizeof(input) / sizeof(double); ++i)
-            input[i] /= 10.0;
-        
-        layer->loadInput(input, 3, 3, 2);
-        layer->setOutputFeatureMapsCount(2);
-        layer->calculateOutput();
-        
-        unsigned long w, h, d;
-        double *out = layer->getOutput(w, h, d);
-        
-        for (ulong z = 0; z < d; ++z)
-        {
-            for (ulong y = 0; y < h; ++y)
-            {
-                for (ulong x = 0; x < w; ++x)
-                    std::cout << out[x + y * w + z * w * h] << ", ";
-                std::cout << std::endl;
-            }
-            std::cout << std::endl << "----------" << std::endl;
-        }
-        
-        for (auto i = 0; i < w * h * d; ++i)
-            std::cout << out[i] << ", ";
-        
-        std::cout << std::endl;
-    }
+//    {
+//        
+//        using namespace sf;
+//        
+//        ConvolutionLayer *layer = new ConvolutionLayer();
+//        double input[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 2, 3};//2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3, 1, 5, 4, 5, 1, 1, 5, 4, 5, 1};
+//        for (unsigned long i = 0; i < sizeof(input) / sizeof(double); ++i)
+//            input[i] /= 10.0;
+//        
+//        layer->loadInput(input, 3, 3, 2);
+//        layer->setOutputFeatureMapsCount(2);
+//        layer->calculateOutput();
+//        
+//        unsigned long w, h, d;
+//        double *out = layer->getOutput(w, h, d);
+//        
+//        for (ulong z = 0; z < d; ++z)
+//        {
+//            for (ulong y = 0; y < h; ++y)
+//            {
+//                for (ulong x = 0; x < w; ++x)
+//                    std::cout << out[x + y * w + z * w * h] << ", ";
+//                std::cout << std::endl;
+//            }
+//            std::cout << std::endl << "----------" << std::endl;
+//        }
+//        
+//        for (unsigned long long i = 0; i < w * h * d; ++i)
+//            std::cout << out[i] << ", ";
+//        
+//        std::cout << std::endl;
+//    }
     
 //    This example was used for debugging backprop
 //    {

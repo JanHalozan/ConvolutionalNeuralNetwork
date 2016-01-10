@@ -102,6 +102,7 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
         this->gradients = new double[totalInputSize];
     
     const ulong outputSliceSize = this->outputWidth * this->outputHeight;
+    const ulong inputSliceSize = this->inputWidth * this->inputHeight;
     
     //Reset the entire gradient map
     memset(this->gradients, 0.0, totalInputSize);
@@ -112,12 +113,12 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
         {
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
-                auto index = col + (row * this->outputWidth) * (lyr * outputSliceSize);
+                auto index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
                 const auto gradient = nextLayer->neurons->at(index).getGradient();
                 const auto routeIndex = this->selectedFilterIndexes[index];
                 
                 //Start index of the gradient frame
-                ulong gradientIndex = (col * this->stride) + (row * this->outputWidth * this->stride) + (lyr * outputSliceSize);
+                ulong gradientIndex = (col * this->stride) + (row * this->outputWidth * this->stride) + (lyr * inputSliceSize);
                 const ulong gradientCol = routeIndex % this->stride;
                 const ulong gradientRow = routeIndex / this->stride;
                 gradientIndex += gradientCol + (gradientRow * this->inputWidth);
