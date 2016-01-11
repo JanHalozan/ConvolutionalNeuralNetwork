@@ -32,6 +32,11 @@ double sf::Neuron::getWeight(ulong index) const
     return this->weights[index];
 }
 
+const std::vector<double> sf::Neuron::getWeights() const
+{
+    return this->weights;
+}
+
 void sf::Neuron::loadInput(std::vector<double> input)
 {
     this->inputs = input;

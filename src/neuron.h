@@ -44,6 +44,7 @@ public:
     
     void randomizeWeights(long count);
     double getWeight(ulong index) const;
+    const std::vector<double> getWeights() const;
     
     void loadInput(std::vector<double> input);
     void calculateOutput();

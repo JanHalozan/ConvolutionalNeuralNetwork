@@ -115,7 +115,6 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
             {
                 //Convolutional layer only has one neuron
                 auto index = nextLayer->type == kLayerTypeConvolutional ? 0 : col + (row * this->outputWidth) + (lyr * outputSliceSize);
-                const auto gradient = nextLayer->neurons->at(index).getGradient();
                 const auto routeIndex = this->selectedFilterIndexes[index];
                 
                 //Start index of the gradient frame
@@ -123,6 +122,9 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
                 const ulong gradientCol = routeIndex % this->stride;
                 const ulong gradientRow = routeIndex / this->stride;
                 gradientIndex += gradientCol + (gradientRow * this->inputWidth);
+                
+                const auto sigmoidOutput = this->input[gradientIndex];
+                const auto gradient = nextLayer->neurons->at(index).getGradient() * sigmoidOutput * (1.0 - sigmoidOutput);
                 
                 this->gradients[gradientIndex] = gradient;
             }
