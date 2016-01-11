@@ -23,7 +23,7 @@ void sf::Net::addLayer(sf::Layer *layer)
     this->layers.push_back(layer);
 }
 
-void sf::Net::addTrainingSample(double *sample, int sampleClass)
+void sf::Net::addTrainingSample(double *sample, std::string sampleClass)
 {
     this->trainingSamples.push_back(sample);
     this->trainingSampleClasses.push_back(sampleClass);
@@ -34,13 +34,16 @@ void sf::Net::train()
     assert_log(this->layers.back()->getType() == kLayerTypeOutputNeuron, "Last layer must be of output type");
     
     //First let's find how many output neurons we need
-    std::vector<int> uniqueClasses = this->trainingSampleClasses;
+    std::vector<std::string> uniqueClasses = this->trainingSampleClasses;
     std::sort(uniqueClasses.begin(), uniqueClasses.end());
     auto end = std::unique(uniqueClasses.begin(), uniqueClasses.end());
     const ulong uniqueClassesCount = std::distance(uniqueClasses.begin(), end);
     
     sf::Layer *layer = this->layers.back();
     layer->reserveNeurons(uniqueClassesCount);
+    
+    for (ulong i = 0; i < uniqueClassesCount; ++i)
+        this->sortedUniqueClasses.push_back(std::make_tuple(i, uniqueClasses[i]));
     
     ulong epoch = 0;
     
@@ -51,6 +54,16 @@ void sf::Net::train()
         
         for (double *sample : this->trainingSamples)
         {
+            //Find the correct index of the output neuron which should be 1
+            std::string sampleClass = this->trainingSampleClasses[sampleCounter];
+            ulong targetOutputNeuron = 0;
+            for (auto &tuple : this->sortedUniqueClasses)
+                if (std::get<1>(tuple) == sampleClass)
+                {
+                    targetOutputNeuron = std::get<0>(tuple);
+                    break;
+                }
+            
             //Get the net output. Every output of intermediate layers is now set.
             std::vector<double *> layeredOutput = this->calculateCompleteNetOutput(sample);
             double *output = layeredOutput.back();
@@ -58,7 +71,7 @@ void sf::Net::train()
             //We want the response to be 1.0 of the output neuron for the class we'were training now and 0.0 for all others.
             for (ulong i = 0; i < uniqueClassesCount; ++i)
             {
-                double desiredResponse = sampleCounter == i ? 1.0 : 0.0;
+                double desiredResponse = targetOutputNeuron == i ? 1.0 : 0.0;
                 double error = fabs(desiredResponse - output[i]);
                 
                 if (error > maxError)
@@ -70,7 +83,7 @@ void sf::Net::train()
             {
                 auto info = new sf::LayerBackpropInfo();
                 info->samplesCount = this->trainingSamples.size();
-                info->currentSampleNumber = sampleCounter;
+                info->currentSampleNumber = targetOutputNeuron;
                 
                 auto layer = *it;
                 layer->loadInput(*layerOutputIt, this->inputDataWidth, this->inputDataHeight);
@@ -104,9 +117,26 @@ void sf::Net::train()
     } while (true);
 }
 
-double *sf::Net::classifySample(double *sample)
+std::vector<std::tuple<double, std::string>> sf::Net::classifySample(double *sample)
 {
-    return this->calculateNetOutput(sample);
+    std::vector<std::tuple<double, std::string>> ret(this->sortedUniqueClasses.size());
+    double *output = this->calculateNetOutput(sample);
+    ulong i = 0;
+    
+    for (auto &tuple : this->sortedUniqueClasses)
+    {
+        const double out = output[std::get<0>(tuple)];
+        ret[i++] = std::make_tuple(out, std::get<1>(tuple));
+    }
+    
+    auto comparator = [](const std::tuple<double, std::string> &a, const std::tuple<double, std::string> &b) -> bool
+    {
+        return std::get<0>(a) > std::get<0>(b);
+    };
+    
+    std::sort(ret.begin(), ret.end(), comparator);
+    
+    return ret;
 }
 
 std::vector<double *> sf::Net::calculateCompleteNetOutput(double *sample)

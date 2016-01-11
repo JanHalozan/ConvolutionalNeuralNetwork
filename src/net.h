@@ -14,6 +14,8 @@
 #include <vector>
 #include <limits>
 #include <cmath>
+#include <string>
+#include <tuple>
 
 #include "layer.h"
 #include "outputneuronlayer.h"
@@ -36,7 +38,8 @@ private:
     std::vector<sf::Layer *> layers;
     
     std::vector<double *> trainingSamples;
-    std::vector<int> trainingSampleClasses;
+    std::vector<std::string> trainingSampleClasses;
+    std::vector<std::tuple<ulong, std::string>> sortedUniqueClasses;
     
     double *calculateNetOutput(double *sample);
     std::vector<double *> calculateCompleteNetOutput(double *sample);
@@ -51,8 +54,8 @@ public:
     
     void addLayer(sf::Layer *layer);
     
-    void addTrainingSample(double *sample, int sampleClass);
-    double *classifySample(double *sample);
+    void addTrainingSample(double *sample, std::string sampleClass);
+    std::vector<std::tuple<double, std::string>> classifySample(double *sample);
     
     void train();
 };

@@ -81,19 +81,19 @@ int main(int argc, char const *argv[])
         net->addLayer(new HiddenNeuronLayer(4));
         net->addLayer(new OutputNeuronLayer());
         
-        net->addTrainingSample(sample1, 0);
-        net->addTrainingSample(sample2, 0);
-        net->addTrainingSample(sample3, 1);
-        net->addTrainingSample(sample4, 1);
-        net->addTrainingSample(sample5, 2);
-        net->addTrainingSample(sample6, 2);
+        net->addTrainingSample(sample1, "cow");
+        net->addTrainingSample(sample2, "cow");
+        net->addTrainingSample(sample3, "chicken");
+        net->addTrainingSample(sample4, "chicken");
+        net->addTrainingSample(sample5, "car");
+        net->addTrainingSample(sample6, "car");
         
         net->train();
         
-        double example[] = {0.0, 0.0, 1.0};
-        double *output = net->classifySample(example);
-        for (int i = 0; i < 3; ++i)
-            std::cout << output[i] << ", ";
+        double example[] = {0.0, 0.8, 0.1};
+        auto output = net->classifySample(example);
+        for (auto &tuple : output)
+            std::cout << std::get<1>(tuple) << ": " << std::get<0>(tuple) << std::endl;
 
         std::cout << std::endl;
         
@@ -132,8 +132,8 @@ int main(int argc, char const *argv[])
 //        
 //        std::cout << std::endl;
 //    }
-    
-//    This example was used for debugging backprop
+//    
+//    //This example was used for debugging backprop
 //    {
 //        using namespace sf;
 //        
@@ -157,10 +157,10 @@ int main(int argc, char const *argv[])
 //        
 //        return 0;
 //    }
-    
-    
-    
-    //Below is a bunch of "unit tests". These are just for testing purposes that things behave the way they should.
+//    
+//    
+//    
+//    //Below is a bunch of "unit tests". These are just for testing purposes that things behave the way they should.
 //    sf::Neuron::learningRate = 0.5;
 //    
 //    double sum = (0.1 * -1) + (-0.1 * 1) + (0.5 * 2) + (0.2 * 3);
@@ -198,46 +198,6 @@ int main(int argc, char const *argv[])
 //    assert(res[1] == 8);
 //    assert(res[2] == 9);
 //    assert(res[3] == 6);
-//    
-//    auto out = new sf::OutputNeuronLayer;
-//    out->reserveNeurons(2);
-//    assert_log(out->neurons->size() == 2, "Neurons reserve fuckup");
-//    out->reserveNeurons(100);
-//    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
-//    out->reserveNeurons(3);
-//    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
-//    out->reserveNeurons(2);
-//    assert_log(out->neurons->size() == 2, "Neurons reserve fuckup");
-//    out->reserveNeurons(100);
-//    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
-//    out->reserveNeurons(3);
-//    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
-//    out->reserveNeurons(20);
-//    assert_log(out->neurons->size() == 20, "Neurons reserve fuckup");
-//    out->reserveNeurons(100);
-//    assert_log(out->neurons->size() == 100, "Neurons reserve fuckup");
-//    out->reserveNeurons(3);
-//    assert_log(out->neurons->size() == 3, "Neurons reserve fuckup");
-//    
-//    //33614 564950498 1097816499 1969887316
-//    std::cout << RAND_MAX << std::endl; //RAND_MAX = 2147483647
-//    const auto samples = 2;
-//    srand(2);
-//    auto net = new sf::Net(3, 1);
-//    net->addLayer(new sf::OutputNeuronLayer());
-//    double sample[] = {1, 2, 8};
-////    net->addTrainingSample(sample, 0);
-//    net->layers.front()->reserveNeurons(samples);
-//    double *output = net->classifySample(sample);
-//    assert_log(net->layers.front()->neurons->front().weights[0] - (-0.499984) < std::numeric_limits<double>::epsilon(), "Weights fuckup");
-//    assert_log(output[0] - 0.97401439427008673 < std::numeric_limits<double>::epsilon(), "Output fuckup");
-//    
-//    for (int i = 0; i < samples; ++i)
-//        std::cout << output[i] << ", ";
-//    
-//    net->layers.front()->neurons->front().gradient = 0.23;
-//    net->layers.front()->neurons->front().recalculateWeights();
-//    assert_log(net->layers.front()->neurons->front().weights[0] - (-0.499984 + (-0.499984 * 0.23 * 1)) < std::numeric_limits<double>::epsilon(), "Weights fuckup");
 //
 //    std::cout << "All good" << std::endl;
     
