@@ -19,12 +19,15 @@ namespace sf
 class sf::OutputNeuronLayer : public sf::Layer
 {
 private:
+    ulong backpropTargetNeuron;
     
 public:
     OutputNeuronLayer();
     
+    void setBackpropTargetNeuron(ulong index);
+    
     void calculateOutput() override;
-    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
+    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
 };
 
 #endif /* outputneuronlayer_h */

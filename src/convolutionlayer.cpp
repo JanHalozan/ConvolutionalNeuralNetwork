@@ -86,7 +86,7 @@ void sf::ConvolutionLayer::calculateOutput()
     }
 }
 
-void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
+void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
     const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
     if (this->gradients == nullptr)

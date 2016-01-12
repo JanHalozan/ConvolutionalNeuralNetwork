@@ -26,12 +26,6 @@ namespace sf
         kLayerTypeHiddenNeuron = 3,
         kLayerTypeOutputNeuron = 4
     } LayerType;
-
-    struct LayerBackpropInfo
-    {
-        ulong samplesCount;
-        ulong currentSampleNumber;
-    };
 }
 
 class sf::Layer
@@ -66,7 +60,7 @@ public:
     virtual void calculateOutput() = 0;
     virtual double *getOutput(ulong &width, ulong &height, ulong &depth) const;
 
-    virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) = 0;
+    virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) = 0;
     void recalculateWeights();
     
     virtual double getGradientOfNeuron(ulong neuronIndex) const;

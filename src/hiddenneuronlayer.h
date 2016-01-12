@@ -24,7 +24,7 @@ public:
     HiddenNeuronLayer(ulong neuronsCount);
     
     void calculateOutput() override;
-    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
+    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
 };
 
 #endif /* hiddenneuronlayer_hpp */

@@ -14,6 +14,11 @@ sf::OutputNeuronLayer::OutputNeuronLayer() : sf::Layer()
     this->outputHeight = 1;
 }
 
+void sf::OutputNeuronLayer::setBackpropTargetNeuron(ulong index)
+{
+    this->backpropTargetNeuron = index;
+}
+
 void sf::OutputNeuronLayer::calculateOutput()
 {
     assert_log(this->inputHeight == 1, "Output neuron layer must have an input height of 1.");
@@ -41,13 +46,13 @@ void sf::OutputNeuronLayer::calculateOutput()
     }
 }
 
-void sf::OutputNeuronLayer::backprop(sf::Layer *, sf::Layer *, sf::LayerBackpropInfo *info)
+void sf::OutputNeuronLayer::backprop(sf::Layer *, sf::Layer *)
 {
     //Calculate the gradients and recalculate the output for each neuron in the output layer
     ulong i = 0;
     for (auto &n : *this->neurons)
     {
-        double desiredOutput = info->currentSampleNumber == i ? 1.0 : 0.0;
+        double desiredOutput = this->backpropTargetNeuron == i ? 1.0 : 0.0;
         double actualOutput = n.getOutput();
         double gradient = actualOutput * (1.0 - actualOutput) * (desiredOutput - actualOutput);
         n.setGradient(gradient);

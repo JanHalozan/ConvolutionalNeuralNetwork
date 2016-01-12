@@ -94,7 +94,7 @@ void sf::PoolingLayer::calculateOutput()
     }
 }
 
-void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
+void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
     const auto totalInputSize = this->inputWidth * this->inputHeight * this->inputDepth;
     

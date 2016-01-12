@@ -37,7 +37,7 @@ void sf::HiddenNeuronLayer::calculateOutput()
     }
 }
 
-void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
+void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
     ulong i = 0;
     

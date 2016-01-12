@@ -30,7 +30,7 @@ public:
     ~PoolingLayer();
 
     void calculateOutput() override;
-    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
+    void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
     
     double getGradientOfNeuron(ulong neuronIndex) const override;
 };

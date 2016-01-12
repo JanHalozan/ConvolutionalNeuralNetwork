@@ -79,17 +79,13 @@ void sf::Net::train()
             }
             
             auto layerOutputIt = layeredOutput.rend();
+            ((OutputNeuronLayer *)this->layers.back())->setBackpropTargetNeuron(targetOutputNeuron);
             for (auto it = this->layers.rbegin(); it != this->layers.rend(); ++it)
             {
-                auto info = new sf::LayerBackpropInfo();
-                info->samplesCount = this->trainingSamples.size();
-                info->currentSampleNumber = targetOutputNeuron;
-                
                 auto layer = *it;
                 layer->loadInput(*layerOutputIt, this->inputDataWidth, this->inputDataHeight);
-                layer->backprop(*(it + 1), *(it - 1), info);
+                layer->backprop(*(it + 1), *(it - 1));
                 
-                delete info;
                 ++layerOutputIt;
             }
             
