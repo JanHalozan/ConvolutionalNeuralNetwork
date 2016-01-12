@@ -40,7 +40,7 @@ const std::vector<double> sf::Neuron::getWeights() const
 void sf::Neuron::loadInput(std::vector<double> input)
 {
     this->inputs = input;
-    this->inputs.insert(this->inputs.begin(), 1.0); //We add the bias in sigmoid activation
+    this->inputs.insert(this->inputs.begin(), -1.0); //We add the bias in sigmoid activation
     
     //It's probably a first time load
     if (this->weights.size() == 0)
@@ -64,12 +64,12 @@ void sf::Neuron::calculateOutput()
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
-            const ulong kernelSize = this->weights.size() - 1;
+            const ulong kernelSide = this->weights.size() - 1;
             double sum = 0.0;
             
             //weights[0] contain the bias
             for (ulong i = 0; i < this->inputs.size(); ++i)
-                sum += this->inputs[i + 1] * this->weights[(i % kernelSize) + 1];
+                sum += this->inputs[i + 1] * this->weights[(i % kernelSide) + 1];
             
             sum += this->inputs[0]; //Bias
             
@@ -90,13 +90,18 @@ void sf::Neuron::recalculateWeights()
     {
         case kNeuronActivationFunctionTypeSig:
         {
-            for (ulong i = 0; i < this->inputs.size(); ++i)
+            for (ulong i = 0; i < this->weights.size(); ++i)
                 this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
         }
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
+            const ulong kernelSide = this->weights.size() - 1;
             
+            for (ulong i = 0; i < this->inputs.size(); ++i)
+                this->weights[(i % kernelSide) + 1] += this->inputs[i] * this->gradient;
+            
+            this->weights[0] += this->gradient * kernelSide * kernelSide;
         }
             break;
     }

@@ -10,9 +10,15 @@
 
 #include "poolinglayer.h"
 
-sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0)
+sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0), gradients(nullptr)
 {
     this->type = kLayerTypeConvolutional;
+}
+
+sf::ConvolutionLayer::~ConvolutionLayer()
+{
+    if (this->gradients != nullptr)
+        delete[] this->gradients;
 }
 
 void sf::ConvolutionLayer::calculateOutput()
@@ -80,33 +86,42 @@ void sf::ConvolutionLayer::calculateOutput()
     }
 }
 
-void sf::ConvolutionLayer::backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
+void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBackpropInfo *)
 {
-//    for (ulong i = 0; i < this->inputs.size(); ++i)
-//        sum += this->inputs[i + 1] * this->weights[(i % kernelSize) + 1];
-    sf::PoolingLayer *layer = (sf::PoolingLayer *)nextLayer;
+    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
+    if (this->gradients == nullptr)
+        this->gradients = new double[gradientsSize];
+    
+    memset(this->gradients, 0, gradientsSize * sizeof(double));
     
     auto kernelSize = this->kernelSide * this->kernelSide;
     auto outputSliceSize = this->outputWidth * this->outputHeight;
     
+    //TODO: Incorporate stride and other things?
     for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
     {
         for (ulong row = 0; row < this->outputHeight; ++row)
         {
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
-                double gradient = layer->getGradients()[col + (row * this->outputWidth) + (lyr * outputSliceSize)];
-                if (gradient == 0.0)
-                    continue;
+                const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
+                double gradient = nextLayer->getGradientOfNeuron(index);
+                double outGradient = 0.0;
+                sf::Neuron &n = this->neurons->at(lyr);
                 
+                if (gradient != 0.0)
+                {
+                    const std::vector<double> &&weights = n.getWeights();
+                    double val = 0.0;
+                    
+                    for (unsigned short i = 0; i < kernelSize; ++i)
+                        val += weights[kernelSize - i - 1] * gradient;
+                    
+                    outGradient = val;
+                }
                 
-            }
-        }
-        for (sf::Neuron &n : *this->neurons)
-        {
-            for (unsigned short i = 0; i < kernelSize; ++i)
-            {
-                n.getWeight(i);
+                n.setGradient(outGradient);
+                this->gradients[index] = outGradient;
             }
         }
     }

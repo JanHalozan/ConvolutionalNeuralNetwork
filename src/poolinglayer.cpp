@@ -105,7 +105,7 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
     const ulong inputSliceSize = this->inputWidth * this->inputHeight;
     
     //Reset the entire gradient map
-    memset(this->gradients, 0.0, totalInputSize);
+    memset(this->gradients, 0, totalInputSize * sizeof(double));
     
     for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
     {
