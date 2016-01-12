@@ -32,7 +32,7 @@ public:
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer, sf::LayerBackpropInfo *info) override;
     
-    const double *getGradients() const;
+    double getGradientOfNeuron(ulong neuronIndex) const override;
 };
 
 #endif /* poolinglayer_h */

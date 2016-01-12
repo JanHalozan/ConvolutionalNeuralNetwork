@@ -132,7 +132,7 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer, sf::LayerBack
     }
 }
 
-const double *sf::PoolingLayer::getGradients() const
+double sf::PoolingLayer::getGradientOfNeuron(ulong neuronIndex) const
 {
-    return this->gradients;
+    return this->gradients[neuronIndex];
 }
