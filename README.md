@@ -37,41 +37,45 @@ Here's what an example might look like (so far only the MLP part is working):
 ```c++
 using namespace sf;
 
+//Size of our input data
 const unsigned long inputWidth = 3;
 const unsigned long inputHeight = 1;
 
-//A bunch of samples. The 1 & 2 are similar so are 3 & 4 and 5 & 6. 
-double sample1[] = {1.0, 0.2, 0.1};
-double sample2[] = {0.8, 0.1, 0.25};
-double sample3[] = {0.2, 0.95, 0.1};
-double sample4[] = {0.11, 0.9, 0.13};
-double sample5[] = {0.0, 0.2, 0.91};
-double sample6[] = {0.21, 0.12, 1.0};
+//A bunch of samples. The 1 & 2 are similar so are 3 & 4 and 5 & 6.
+double sample1[] = {1.0, 0.2, 0.1};     //Cow
+double sample2[] = {0.8, 0.1, 0.25};    //Cow
+double sample3[] = {0.2, 0.95, 0.1};    //Chicken
+double sample4[] = {0.11, 0.9, 0.13};   //Chicken
+double sample5[] = {0.0, 0.2, 0.91};    //Car
+double sample6[] = {0.21, 0.12, 1.0};   //Car
+
 
 //A new network with the given data width and height
 Net *net = new Net(inputWidth, inputHeight);
 net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
 net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
-net->addLayer(new OutputNeuronLayer()); //An output layer
+net->addLayer(new OutputNeuronLayer()); //Finish it off by adding an output layer
 
-//Add the samples
-net->addTrainingSample(sample1, 0); //Sample 1 & 2 belong to class 0 (first index of the output array)
-net->addTrainingSample(sample2, 0);
-net->addTrainingSample(sample3, 1); //Sample 3 & 5 belong to class 1 (second index of the output array)
-net->addTrainingSample(sample4, 1);
-net->addTrainingSample(sample5, 2); //Sample 5 & 6 belong to class 2 (third index of the output array)
-net->addTrainingSample(sample6, 2);
+//Add all the samples with their corresponding labels
+net->addTrainingSample(sample1, "cow");
+net->addTrainingSample(sample2, "cow");
+net->addTrainingSample(sample3, "chicken");
+net->addTrainingSample(sample4, "chicken");
+net->addTrainingSample(sample5, "car");
+net->addTrainingSample(sample6, "car");
 
 //And now we play the waiting game
 net->train();
 
-//This example input is very similar to the sample 1 and 2 so we expect our output to have a value
-//close to 1 for class 0 and a value close to 0 for other classes.
-double example[] = {1.0, 0.2, 0.11};
-double *output = net->classifySample(example);
-for (int i = 0; i < 3; ++i)
-    std::cout << output[i] << ", ";
+//This example is similar to "chicken" so we expect the chicken probability to be close to 1 and car and cow to be close to 0
+double example[] = {0.0, 0.8, 0.1};
+auto output = net->classifySample(example);
 
+//Let's see what we get
+for (auto &tuple : output)
+    std::cout << std::get<1>(tuple) << ": " << std::get<0>(tuple) << std::endl;
+
+std::cout << std::endl;
 ```
 
 ####Building it
