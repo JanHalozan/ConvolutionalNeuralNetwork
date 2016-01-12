@@ -20,37 +20,9 @@ sf::Layer::~Layer()
     delete this->neurons;
 }
 
-sf::LayerType sf::Layer::getType()
+sf::LayerType sf::Layer::getType() const
 {
     return this->type;
-}
-
-const std::vector<sf::Neuron> sf::Layer::getNeurons() const
-{
-    return *this->neurons;
-}
-
-void sf::Layer::loadInput(double *input, ulong width, ulong height, ulong depth)
-{
-    this->inputWidth = width;
-    this->inputHeight = height;
-    this->inputDepth = depth;
-    this->input = input;
-}
-
-double *sf::Layer::getOutput(ulong &width, ulong &height, ulong &depth)
-{
-    width = this->outputWidth;
-    height = this->outputHeight;
-    depth = this->outputDepth;
-    
-    return this->output;
-}
-
-void sf::Layer::recalculateWeights()
-{
-    for (auto &n : *this->neurons)
-        n.recalculateWeights();
 }
 
 void sf::Layer::reserveNeurons(ulong count)
@@ -72,4 +44,37 @@ void sf::Layer::reserveNeurons(ulong count)
             }
         }
     }
+}
+
+const std::vector<sf::Neuron> sf::Layer::getNeurons() const
+{
+    return *this->neurons;
+}
+
+void sf::Layer::loadInput(double *input, ulong width, ulong height, ulong depth)
+{
+    this->inputWidth = width;
+    this->inputHeight = height;
+    this->inputDepth = depth;
+    this->input = input;
+}
+
+double *sf::Layer::getOutput(ulong &width, ulong &height, ulong &depth) const
+{
+    width = this->outputWidth;
+    height = this->outputHeight;
+    depth = this->outputDepth;
+    
+    return this->output;
+}
+
+void sf::Layer::recalculateWeights()
+{
+    for (auto &n : *this->neurons)
+        n.recalculateWeights();
+}
+
+double sf::Layer::getGradientOfNeuron(ulong neuronIndex) const
+{
+    return this->neurons->at(neuronIndex).getGradient();
 }
