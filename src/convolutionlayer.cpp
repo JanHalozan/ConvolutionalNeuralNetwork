@@ -111,7 +111,7 @@ void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
                 
                 if (gradient != 0.0)
                 {
-                    const std::vector<double> &&weights = n.getWeights();
+                    auto &&weights = n.getWeights();
                     double val = 0.0;
                     
                     for (unsigned short i = 0; i < kernelSize; ++i)
