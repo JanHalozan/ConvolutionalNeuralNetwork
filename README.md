@@ -2,7 +2,7 @@
 
 A general purpose convolutional neural network.
 
-**Under construction. This network it currently under development and expected to be finished soon.**  
+**Under construction. This network it currently under development and expected to be finished soon.**
 When finished I will write a blog post on how to write the thing from scratch yourself. Feel free to _star_ the repo.
 
 ###About
@@ -49,12 +49,19 @@ double sample4[] = {0.11, 0.9, 0.13};   //Chicken
 double sample5[] = {0.0, 0.2, 0.91};    //Car
 double sample6[] = {0.21, 0.12, 1.0};   //Car
 
-
 //A new network with the given data width and height
 Net *net = new Net(inputWidth, inputHeight);
-net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
-net->addLayer(new HiddenNeuronLayer(4)); //A hidden neural layer with 4 neurons
-net->addLayer(new OutputNeuronLayer()); //Finish it off by adding an output layer
+
+sf::LayerDescriptor descriptor;
+descriptor.type = kLayerTypeHiddenNeuron;
+descriptor.neuronCount = 4;
+
+net->addLayer(descriptor); //A hidden neural layer with 4 neurons
+net->addLayer(descriptor); //A hidden neural layer with 4 neurons
+
+descriptor.type = kLayerTypeOutputNeuron;
+
+net->addLayer(descriptor); //Finish it off by adding an output layer
 
 //Add all the samples with their corresponding labels
 net->addTrainingSample(sample1, "cow");
@@ -68,7 +75,7 @@ net->addTrainingSample(sample6, "car");
 net->train();
 
 //This example is similar to "chicken" so we expect the chicken probability to be close to 1 and car and cow to be close to 0
-double example[] = {0.0, 0.8, 0.1};
+double example[] = {0.1, 0.98, 0.01};
 auto output = net->classifySample(example);
 
 //Let's see what we get
@@ -76,6 +83,8 @@ for (auto &tuple : output)
     std::cout << std::get<1>(tuple) << ": " << std::get<0>(tuple) << std::endl;
 
 std::cout << std::endl;
+
+return 0;
 ```
 
 ####Building it
@@ -84,7 +93,7 @@ You can open it using Xcode or just `make build`. To toggle debug mode (exposes 
 
 ###TODO
 
-Things to come (in order):  
+Things to come (in order):
 - [ ] Finish `PoolingLayer` backpropagation
 - [ ] Finish `ConvolutionLayer` backpropagation
 - [ ] A few tweaks here and there
@@ -92,7 +101,7 @@ Things to come (in order):
 - [ ] Merge `OutputNeuronLayer` and `HiddenNeuronLayer`
 - [ ] Refactor to C++14 (no raw pointers, ...)
 - [ ] Finish various TODOs (code comments)
-- [ ] Release beta version  
+- [ ] Release beta version
 After this point I don't have a concrete plan of what to do next. Here are some things I'm considering:
 - [ ] Speed it up
 - [ ] CUDA support
