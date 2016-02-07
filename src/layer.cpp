@@ -78,3 +78,33 @@ double sf::Layer::getGradientOfNeuron(ulong neuronIndex) const
 {
     return this->neurons->at(neuronIndex).getGradient();
 }
+
+void sf::Layer::setInputWidth(ulong w)
+{
+    this->inputWidth = w;
+}
+
+ulong sf::Layer::getInputWidth() const
+{
+    return this->inputWidth;
+}
+
+void sf::Layer::setInputHeight(ulong h)
+{
+    this->inputHeight = h;
+}
+
+ulong sf::Layer::getInputHeight() const
+{
+    return this->inputHeight;
+}
+
+void sf::Layer::setInputDepth(ulong d)
+{
+    this->inputDepth = d;
+}
+
+ulong sf::Layer::getInputDepth() const
+{
+    return this->inputDepth;
+}

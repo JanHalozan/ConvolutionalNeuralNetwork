@@ -23,6 +23,12 @@ void sf::Net::addLayer(sf::Layer *layer)
     this->layers.push_back(layer);
 }
 
+void sf::Net::addLayer(const sf::LayerDescriptor &descriptor)
+{
+    auto layer = sf::makeLayer(descriptor);
+    this->layers.push_back(layer);
+}
+
 void sf::Net::addTrainingSample(double *sample, std::string sampleClass)
 {
     this->trainingSamples.push_back(sample);

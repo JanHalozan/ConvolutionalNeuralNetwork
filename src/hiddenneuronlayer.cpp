@@ -8,10 +8,9 @@
 
 #include "hiddenneuronlayer.h"
 
-sf::HiddenNeuronLayer::HiddenNeuronLayer(ulong neuronsCount) : sf::Layer()
+sf::HiddenNeuronLayer::HiddenNeuronLayer() : sf::Layer()
 {
     this->type = kLayerTypeHiddenNeuron;
-    this->reserveNeurons(neuronsCount);
 }
 
 void sf::HiddenNeuronLayer::calculateOutput()

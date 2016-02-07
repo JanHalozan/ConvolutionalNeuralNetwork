@@ -30,6 +30,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		422E36971C4BE783000B4135 /* layerdescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = layerdescriptor.h; sourceTree = "<group>"; };
+		422E36991C4C2EB9000B4135 /* layers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = layers.h; sourceTree = "<group>"; };
 		42F69DB71C31FDAC005082C1 /* ConvolutionalNeuralNetwork */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ConvolutionalNeuralNetwork; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F69DD51C31FE3F005082C1 /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layer.cpp; sourceTree = "<group>"; };
 		42F69DD61C31FE3F005082C1 /* layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = layer.h; sourceTree = "<group>"; };
@@ -87,6 +89,8 @@
 				42F69DD81C31FE3F005082C1 /* net.cpp */,
 				42F69DDB1C31FE3F005082C1 /* neuron.h */,
 				42F69DDA1C31FE3F005082C1 /* neuron.cpp */,
+				422E36991C4C2EB9000B4135 /* layers.h */,
+				422E36971C4BE783000B4135 /* layerdescriptor.h */,
 				42F69DD61C31FE3F005082C1 /* layer.h */,
 				42F69DD51C31FE3F005082C1 /* layer.cpp */,
 				42F69DEB1C3326AA005082C1 /* outputneuronlayer.h */,

@@ -42,7 +42,7 @@ protected:
     ulong outputWidth;
     ulong outputHeight;
     ulong outputDepth;
-
+    
     double *input;
     double *output;
     
@@ -52,18 +52,26 @@ public:
     Layer();
     virtual ~Layer();
 
-    sf::LayerType getType() const;
+    LayerType getType() const;
     
     virtual void reserveNeurons(ulong count);
 
     void loadInput(double *input, ulong width, ulong height, ulong depth = 1);
     virtual void calculateOutput() = 0;
+    
     virtual double *getOutput(ulong &width, ulong &height, ulong &depth) const;
 
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) = 0;
     void recalculateWeights();
     
     virtual double getGradientOfNeuron(ulong neuronIndex) const;
+    
+    void setInputWidth(ulong w);
+    ulong getInputWidth() const;
+    void setInputHeight(ulong h);
+    ulong getInputHeight() const;
+    void setInputDepth(ulong d);
+    ulong getInputDepth() const;
 };
 
 #endif /* layer_h */

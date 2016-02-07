@@ -105,7 +105,7 @@ void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
                 const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
-                double gradient = nextLayer->getGradientOfNeuron(index);
+                const double gradient = nextLayer->getGradientOfNeuron(index);
                 double outGradient = 0.0;
                 sf::Neuron &n = this->neurons->at(lyr);
                 

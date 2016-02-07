@@ -17,11 +17,7 @@
 #include <string>
 #include <tuple>
 
-#include "layer.h"
-#include "outputneuronlayer.h"
-#include "hiddenneuronlayer.h"
-#include "poolinglayer.h"
-#include "convolutionlayer.h"
+#include "layers.h"
 #include "neuron.h"
 
 namespace sf
@@ -53,11 +49,14 @@ public:
     ~Net();
     
     void addLayer(sf::Layer *layer);
+    void addLayer(const sf::LayerDescriptor &descriptor);
     
     void addTrainingSample(double *sample, std::string sampleClass);
     std::vector<std::tuple<double, std::string>> classifySample(double *sample);
     
     void train();
+    
+    
 };
 
 #endif /* net_h */
