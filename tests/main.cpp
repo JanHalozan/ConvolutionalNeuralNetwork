@@ -13,8 +13,12 @@
 
 #include "net.h"
 
+
 int main(int argc, char const *argv[])
 {
+#pragma unused(argc)
+#pragma unused(argv)
+    
 //    {
 //        using namespace sf;
 //        
