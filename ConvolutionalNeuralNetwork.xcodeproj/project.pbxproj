@@ -15,6 +15,7 @@
 		421152991D1867CD00D61660 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152901D1867CD00D61660 /* net.cpp */; };
 		4211529A1D1867CD00D61660 /* neuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152921D1867CD00D61660 /* neuron.cpp */; };
 		4211529D1D1867D600D61660 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4211529C1D1867D600D61660 /* main.cpp */; };
+		421152AB1D18691A00D61660 /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152A91D18691A00D61660 /* Loader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,8 @@
 		421152A51D18683800D61660 /* data_batch_5.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = data_batch_5.bin; sourceTree = "<group>"; };
 		421152A61D18683800D61660 /* test_batch.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = test_batch.bin; sourceTree = "<group>"; };
 		421152A71D18685500D61660 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		421152A91D18691A00D61660 /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
+		421152AA1D18691A00D61660 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Loader.h; sourceTree = "<group>"; };
 		42F69DB71C31FDAC005082C1 /* ConvolutionalNeuralNetwork */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ConvolutionalNeuralNetwork; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F69DF11C385A55005082C1 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,10 +79,10 @@
 			children = (
 				421152821D1867CD00D61660 /* helpers.h */,
 				421152831D1867CD00D61660 /* layers */,
-				421152901D1867CD00D61660 /* net.cpp */,
 				421152911D1867CD00D61660 /* net.h */,
-				421152921D1867CD00D61660 /* neuron.cpp */,
+				421152901D1867CD00D61660 /* net.cpp */,
 				421152931D1867CD00D61660 /* neuron.h */,
+				421152921D1867CD00D61660 /* neuron.cpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -87,18 +90,18 @@
 		421152831D1867CD00D61660 /* layers */ = {
 			isa = PBXGroup;
 			children = (
-				421152841D1867CD00D61660 /* convolutionlayer.cpp */,
-				421152851D1867CD00D61660 /* convolutionlayer.h */,
-				421152861D1867CD00D61660 /* hiddenneuronlayer.cpp */,
-				421152871D1867CD00D61660 /* hiddenneuronlayer.h */,
-				421152881D1867CD00D61660 /* layer.cpp */,
-				421152891D1867CD00D61660 /* layer.h */,
-				4211528A1D1867CD00D61660 /* layerdescriptor.h */,
 				4211528B1D1867CD00D61660 /* layers.h */,
-				4211528C1D1867CD00D61660 /* outputneuronlayer.cpp */,
+				4211528A1D1867CD00D61660 /* layerdescriptor.h */,
+				421152891D1867CD00D61660 /* layer.h */,
+				421152881D1867CD00D61660 /* layer.cpp */,
+				421152851D1867CD00D61660 /* convolutionlayer.h */,
+				421152841D1867CD00D61660 /* convolutionlayer.cpp */,
+				421152871D1867CD00D61660 /* hiddenneuronlayer.h */,
+				421152861D1867CD00D61660 /* hiddenneuronlayer.cpp */,
 				4211528D1D1867CD00D61660 /* outputneuronlayer.h */,
-				4211528E1D1867CD00D61660 /* poolinglayer.cpp */,
+				4211528C1D1867CD00D61660 /* outputneuronlayer.cpp */,
 				4211528F1D1867CD00D61660 /* poolinglayer.h */,
+				4211528E1D1867CD00D61660 /* poolinglayer.cpp */,
 			);
 			path = layers;
 			sourceTree = "<group>";
@@ -134,6 +137,15 @@
 			path = "cifar-10-batches-bin";
 			sourceTree = "<group>";
 		};
+		421152A81D1868F500D61660 /* loader */ = {
+			isa = PBXGroup;
+			children = (
+				421152AA1D18691A00D61660 /* Loader.h */,
+				421152A91D18691A00D61660 /* Loader.cpp */,
+			);
+			path = loader;
+			sourceTree = "<group>";
+		};
 		42F69DAE1C31FDAC005082C1 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				421152811D1867CD00D61660 /* core */,
+				421152A81D1868F500D61660 /* loader */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -218,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4211529A1D1867CD00D61660 /* neuron.cpp in Sources */,
+				421152AB1D18691A00D61660 /* Loader.cpp in Sources */,
 				421152951D1867CD00D61660 /* hiddenneuronlayer.cpp in Sources */,
 				421152941D1867CD00D61660 /* convolutionlayer.cpp in Sources */,
 				421152961D1867CD00D61660 /* layer.cpp in Sources */,
