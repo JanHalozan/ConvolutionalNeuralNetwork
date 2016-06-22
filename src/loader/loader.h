@@ -1,13 +1,13 @@
 //
-//  Loader.h
+//  loader.h
 //  ConvolutionalNeuralNetwork
 //
 //  Created by Jan Haložan on 20/06/16.
 //  Copyright © 2016 JanHalozan. All rights reserved.
 //
 
-#ifndef Loader_h
-#define Loader_h
+#ifndef loader_h
+#define loader_h
 
 #include <fstream>
 #include <string>
@@ -16,8 +16,8 @@
 class Loader {
     
 private:
-    std::ifstream file;
     std::vector<unsigned char> data;
+    std::string cifarPath;
     
 public:
     
@@ -25,8 +25,8 @@ public:
     ~Loader();
     
     void loadAllSamples();
-    void getSampleAtIndex(unsigned int index, double *sample);
+    void getSampleAtIndex(unsigned int index, std::string &label, double *&sample);
     
 };
 
-#endif /* Loader_h */
+#endif /* loader_h */

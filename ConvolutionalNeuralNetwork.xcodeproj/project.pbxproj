@@ -15,7 +15,10 @@
 		421152991D1867CD00D61660 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152901D1867CD00D61660 /* net.cpp */; };
 		4211529A1D1867CD00D61660 /* neuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152921D1867CD00D61660 /* neuron.cpp */; };
 		4211529D1D1867D600D61660 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4211529C1D1867D600D61660 /* main.cpp */; };
-		421152AB1D18691A00D61660 /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152A91D18691A00D61660 /* Loader.cpp */; };
+		421152AB1D18691A00D61660 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152A91D18691A00D61660 /* loader.cpp */; };
+		42BAF3731D19BE98006263AD /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF35C1D19BE98006263AD /* lodepng.cpp */; };
+		42BAF3761D19BE98006263AD /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF3601D19BE98006263AD /* lodepng_util.cpp */; };
+		42BAF3781D19BE98006263AD /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF3631D19BE98006263AD /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,8 +60,13 @@
 		421152A51D18683800D61660 /* data_batch_5.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = data_batch_5.bin; sourceTree = "<group>"; };
 		421152A61D18683800D61660 /* test_batch.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = test_batch.bin; sourceTree = "<group>"; };
 		421152A71D18685500D61660 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
-		421152A91D18691A00D61660 /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
-		421152AA1D18691A00D61660 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Loader.h; sourceTree = "<group>"; };
+		421152A91D18691A00D61660 /* loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader.cpp; sourceTree = "<group>"; };
+		421152AA1D18691A00D61660 /* loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader.h; sourceTree = "<group>"; };
+		42BAF35C1D19BE98006263AD /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		42BAF35D1D19BE98006263AD /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		42BAF3601D19BE98006263AD /* lodepng_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng_util.cpp; sourceTree = "<group>"; };
+		42BAF3611D19BE98006263AD /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng_util.h; sourceTree = "<group>"; };
+		42BAF3631D19BE98006263AD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		42F69DB71C31FDAC005082C1 /* ConvolutionalNeuralNetwork */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ConvolutionalNeuralNetwork; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F69DF11C385A55005082C1 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,10 +148,30 @@
 		421152A81D1868F500D61660 /* loader */ = {
 			isa = PBXGroup;
 			children = (
-				421152AA1D18691A00D61660 /* Loader.h */,
-				421152A91D18691A00D61660 /* Loader.cpp */,
+				421152AA1D18691A00D61660 /* loader.h */,
+				421152A91D18691A00D61660 /* loader.cpp */,
 			);
 			path = loader;
+			sourceTree = "<group>";
+		};
+		42BAF34A1D19BE98006263AD /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				42BAF34B1D19BE98006263AD /* lodepng */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		42BAF34B1D19BE98006263AD /* lodepng */ = {
+			isa = PBXGroup;
+			children = (
+				42BAF35C1D19BE98006263AD /* lodepng.cpp */,
+				42BAF35D1D19BE98006263AD /* lodepng.h */,
+				42BAF3601D19BE98006263AD /* lodepng_util.cpp */,
+				42BAF3611D19BE98006263AD /* lodepng_util.h */,
+				42BAF3631D19BE98006263AD /* README.md */,
+			);
+			path = lodepng;
 			sourceTree = "<group>";
 		};
 		42F69DAE1C31FDAC005082C1 = {
@@ -151,6 +179,7 @@
 			children = (
 				42F69DF11C385A55005082C1 /* Makefile */,
 				42F69DD41C31FE3F005082C1 /* src */,
+				42BAF34A1D19BE98006263AD /* lib */,
 				4211529B1D1867D600D61660 /* tests */,
 				4211529E1D18683800D61660 /* fixture */,
 				42F69DB81C31FDAC005082C1 /* Products */,
@@ -230,8 +259,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42BAF3731D19BE98006263AD /* lodepng.cpp in Sources */,
 				4211529A1D1867CD00D61660 /* neuron.cpp in Sources */,
-				421152AB1D18691A00D61660 /* Loader.cpp in Sources */,
+				421152AB1D18691A00D61660 /* loader.cpp in Sources */,
+				42BAF3781D19BE98006263AD /* README.md in Sources */,
 				421152951D1867CD00D61660 /* hiddenneuronlayer.cpp in Sources */,
 				421152941D1867CD00D61660 /* convolutionlayer.cpp in Sources */,
 				421152961D1867CD00D61660 /* layer.cpp in Sources */,
@@ -239,6 +270,7 @@
 				421152981D1867CD00D61660 /* poolinglayer.cpp in Sources */,
 				4211529D1D1867D600D61660 /* main.cpp in Sources */,
 				421152971D1867CD00D61660 /* outputneuronlayer.cpp in Sources */,
+				42BAF3761D19BE98006263AD /* lodepng_util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

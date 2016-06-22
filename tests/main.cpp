@@ -13,11 +13,34 @@
 
 #include "net.h"
 
+#include "loader.h"
+#include "lodepng.h"
 
 int main(int argc, char const *argv[])
 {
 #pragma unused(argc)
 #pragma unused(argv)
+    
+//    //Test for loader
+//    {
+//        const auto path = "/Users/janhalozan/Work/C++/ConvolutionalNeuralNetwork/fixture/cifar-10-batches-bin/";
+//        Loader loader(path);
+//        printf("sta");
+//        loader.loadAllSamples();
+//        
+//        std::vector<unsigned char> imgData(32 * 32 * 4);
+//        int a = 0;
+//        const uint offset = (1024 * 3 + 1) * 49999;
+//        for (uint i = offset + 1; i < 32 * 32 + offset + 1; ++i)
+//        {
+//            imgData[a++] = loader.data[i];
+//            imgData[a++] = loader.data[i + 1024];
+//            imgData[a++] = loader.data[i + 2048];
+//            imgData[a++] = 255;
+//        }
+//    
+//        lodepng::encode("/Users/janhalozan/Work/C++/ConvolutionalNeuralNetwork/fixture/cifar-10-batches-bin/test.png", imgData, 32, 32);
+//    }
     
 //    {
 //        using namespace sf;
