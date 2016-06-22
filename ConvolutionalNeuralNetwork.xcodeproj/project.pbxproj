@@ -18,7 +18,6 @@
 		421152AB1D18691A00D61660 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421152A91D18691A00D61660 /* loader.cpp */; };
 		42BAF3731D19BE98006263AD /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF35C1D19BE98006263AD /* lodepng.cpp */; };
 		42BAF3761D19BE98006263AD /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF3601D19BE98006263AD /* lodepng_util.cpp */; };
-		42BAF3781D19BE98006263AD /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 42BAF3631D19BE98006263AD /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -262,7 +261,6 @@
 				42BAF3731D19BE98006263AD /* lodepng.cpp in Sources */,
 				4211529A1D1867CD00D61660 /* neuron.cpp in Sources */,
 				421152AB1D18691A00D61660 /* loader.cpp in Sources */,
-				42BAF3781D19BE98006263AD /* README.md in Sources */,
 				421152951D1867CD00D61660 /* hiddenneuronlayer.cpp in Sources */,
 				421152941D1867CD00D61660 /* convolutionlayer.cpp in Sources */,
 				421152961D1867CD00D61660 /* layer.cpp in Sources */,
