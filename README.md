@@ -3,7 +3,7 @@
 A general purpose convolutional neural network.
 
 **Under construction. This network it currently under development and expected to be finished soon.**
-When finished I will write a blog post on how to write the thing from scratch yourself. Feel free to _star_ the repo.
+When finished I will write a blog post on how to write the thing from scratch yourself.
 
 ###About
 
