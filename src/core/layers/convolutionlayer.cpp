@@ -45,27 +45,28 @@ void sf::ConvolutionLayer::calculateOutput()
     ulong outCol = 0;
     ulong outLyr = 0;
     
-    for (llong row = -this->zeroPaddingSize; row < (signed)(this->inputHeight - this->kernelSide + this->zeroPaddingSize + 1); row += this->stride)
+    for (auto &neuron : *this->neurons)
     {
-        for (llong col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
+        for (llong row = -this->zeroPaddingSize; row < (signed)(this->inputHeight - this->kernelSide + this->zeroPaddingSize + 1); row += this->stride)
         {
-            for (auto &neuron : *this->neurons)
+            for (llong col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
             {
                 std::vector<double> input(this->kernelSide * this->kernelSide * this->inputDepth);
                 ulong i = 0;
-                for (ulong lyr = 0; lyr < this->inputDepth; ++lyr)
+                
+                for (ulong z = 0; z < this->inputDepth; ++z)
                 {
                     for (ulong y = 0; y < this->kernelSide; ++y)
                     {
-                        for (ulong x = 0; x < this->kernelSide; ++x)
+                        for (ulong x  = 0; x < this->kernelSide; ++x)
                         {
                             if (row < 0 || row >= (signed)this->inputHeight || col < 0 || col >= (signed)this->inputWidth)
                             {
-                                input.push_back(0.0);
+                                input[i++] = 0.0;
                                 continue;
                             }
                             
-                            double val = this->input[(col + x) + ((row + y) * this->inputWidth) + (lyr * sliceSize)];
+                            const double val = this->input[(col + x) + ((row + y) * this->inputWidth) + (z * sliceSize)];
                             input[i++] = val;
                         }
                     }
@@ -74,11 +75,11 @@ void sf::ConvolutionLayer::calculateOutput()
                 neuron.loadInput(input);
                 neuron.calculateOutput();
                 
-                this->output[outCol + (outRow * this->outputWidth) + (outputSliceSize * outLyr)] = neuron.getOutput();
-
+                this->output[outCol + (outRow * this->outputWidth) + (outLyr * outputSliceSize)] = neuron.getOutput();
+                
                 ++outCol;
-                outRow += outCol / this->outputWidth;
-                outLyr += (outRow / this->outputHeight) * (outCol / this->outputWidth);
+                outRow += outCol / this->outputWidth; //Adds 1 only when actually entire row has been filled (C integer division)
+                outLyr += (outRow / this->outputHeight) * (outCol / this->outputWidth); //Same as above (only 1 * 1 = 1)
                 outCol %= this->outputWidth;
                 outRow %= this->outputHeight;
             }

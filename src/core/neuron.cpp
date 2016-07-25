@@ -59,7 +59,7 @@ void sf::Neuron::calculateOutput()
             for (ulong i = 0; i < this->inputs.size(); ++i)
                 sum += this->inputs[i] * this->weights[i];
             
-            this->output = 1.0 / (1 + exp(-sum));
+            this->output = 1.0 / (1.0 + exp(-sum));
         }
             break;
         case kNeuronActivationFunctionTypeConvolution:
@@ -67,12 +67,12 @@ void sf::Neuron::calculateOutput()
             double sum = 0.0;
             
             //weights[0] contain the bias
-            for (ulong i = 0; i < this->inputs.size(); ++i)
-                sum += this->inputs[i + 1] * this->weights[i + 1];
+            for (ulong i = 1; i < this->inputs.size() + 1; ++i)
+                sum += this->inputs[i] * this->weights[i];
             
             sum += this->inputs[0]; //Bias
             
-            this->output = 1.0 / (1 + exp(-sum));
+            this->output = 1.0 / (1.0 + exp(-sum));
         }
             break;
     }
