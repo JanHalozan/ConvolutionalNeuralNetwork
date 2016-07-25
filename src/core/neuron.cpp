@@ -64,12 +64,11 @@ void sf::Neuron::calculateOutput()
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
-            const ulong kernelSide = this->weights.size() - 1;
             double sum = 0.0;
             
             //weights[0] contain the bias
             for (ulong i = 0; i < this->inputs.size(); ++i)
-                sum += this->inputs[i + 1] * this->weights[(i % kernelSide) + 1];
+                sum += this->inputs[i + 1] * this->weights[i + 1];
             
             sum += this->inputs[0]; //Bias
             

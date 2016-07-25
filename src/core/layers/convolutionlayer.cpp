@@ -45,9 +45,9 @@ void sf::ConvolutionLayer::calculateOutput()
     ulong outCol = 0;
     ulong outLyr = 0;
     
-    for (long long row = -this->zeroPaddingSize; row < (signed)(this->inputHeight - this->kernelSide + this->zeroPaddingSize + 1); row += this->stride)
+    for (llong row = -this->zeroPaddingSize; row < (signed)(this->inputHeight - this->kernelSide + this->zeroPaddingSize + 1); row += this->stride)
     {
-        for (long long col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
+        for (llong col = -this->zeroPaddingSize; col < (signed)(this->inputWidth - this->kernelSide + this->zeroPaddingSize + 1); col += this->stride)
         {
             for (auto &neuron : *this->neurons)
             {
@@ -132,7 +132,7 @@ void sf::ConvolutionLayer::reserveNeurons(ulong count)
     Layer::reserveNeurons(count);
     
     //+1 for the bias weight
-    const ulong inputCount = this->kernelSide * this->kernelSide + 1;
+    const ulong inputCount = this->kernelSide * this->kernelSide * this->inputDepth + 1;
     
     for (sf::Neuron &n : *this->neurons)
         n.randomizeWeights(inputCount);

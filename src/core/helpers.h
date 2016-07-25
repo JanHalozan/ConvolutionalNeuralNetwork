@@ -10,6 +10,7 @@
 #define helpers_h
 
 typedef unsigned long ulong;
+typedef long long llong;
 
 #define DEBUG
 
