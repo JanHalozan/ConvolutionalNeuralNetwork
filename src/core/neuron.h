@@ -33,9 +33,9 @@ private:
     
     std::vector<double> weights;
     std::vector<double> inputs;
+    std::vector<double> gradients;
 
     double output;
-    double gradient;
     
 public:
     static double learningRate;
@@ -43,6 +43,7 @@ public:
     Neuron();
     
     void randomizeWeights(const long count);
+    
     double getWeight(const ulong index) const;
     const std::vector<double> getWeights() const;
     
@@ -50,13 +51,14 @@ public:
     void calculateOutput();
     double getOutput() const;
     
-    void setGradient(const double g);
-    double getGradient() const;
+    void reserveGradientItems(const ulong count);
+    void setGradient(const double g, const ulong index = 0);
+    double getGradient(const ulong index = 0) const;
     
     void recalculateWeights();
     
-    void setActivationFunctionType(sf::NeuronActivationFunctionType t);
-    sf::NeuronActivationFunctionType getActivationFunctionType();
+    void setActivationFunctionType(const sf::NeuronActivationFunctionType t);
+    sf::NeuronActivationFunctionType getActivationFunctionType() const;
 };
 
 #endif /* neuron_h */

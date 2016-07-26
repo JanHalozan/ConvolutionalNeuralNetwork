@@ -23,7 +23,7 @@ private:
     unsigned short kernelSide;
     unsigned char zeroPaddingSize;
     
-    double *gradients;
+    void resolveGradientCapacity();
     
 public:
     ConvolutionLayer();

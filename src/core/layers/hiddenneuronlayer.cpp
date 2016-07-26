@@ -47,7 +47,7 @@ void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
         for (const auto &nextLayerNeuron : nextLayer->getNeurons())
             gradientSum += nextLayerNeuron.getGradient() * nextLayerNeuron.getWeight(i + 1); //i + 1 because index 0 is the threshold
         
-        double gradient = neuron.getOutput() * (1.0 - neuron.getOutput()) * gradientSum;
+        const double gradient = neuron.getOutput() * (1.0 - neuron.getOutput()) * gradientSum;
         neuron.setGradient(gradient);
         ++i;
     }

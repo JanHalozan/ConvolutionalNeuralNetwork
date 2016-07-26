@@ -12,6 +12,7 @@ double sf::Neuron::learningRate = 0.5;
 
 sf::Neuron::Neuron() : activationType(kNeuronActivationFunctionTypeSig), output(0.0)
 {
+    this->reserveGradientItems(1);
 }
 
 void sf::Neuron::randomizeWeights(const long count)
@@ -90,7 +91,7 @@ void sf::Neuron::recalculateWeights()
         case kNeuronActivationFunctionTypeSig:
         {
             for (ulong i = 0; i < this->weights.size(); ++i)
-                this->weights[i] += this->learningRate * this->gradient * this->inputs[i];
+                this->weights[i] += this->learningRate * this->getGradient() * this->inputs[i];
         }
             break;
         case kNeuronActivationFunctionTypeConvolution:
@@ -98,30 +99,48 @@ void sf::Neuron::recalculateWeights()
             const ulong kernelSide = this->weights.size() - 1;
             
             for (ulong i = 0; i < this->inputs.size(); ++i)
-                this->weights[(i % kernelSide) + 1] += this->inputs[i] * this->gradient;
+                this->weights[(i % kernelSide) + 1] += this->inputs[i] * this->getGradient();
             
-            this->weights[0] += this->gradient * kernelSide * kernelSide;
+            this->weights[0] += this->getGradient() * kernelSide * kernelSide;
         }
             break;
     }
 }
 
-void sf::Neuron::setGradient(const double g)
+void sf::Neuron::reserveGradientItems(const ulong count)
 {
-    this->gradient = g;
+    if (this->gradients.size() != count)
+        this->gradients.resize(count);
 }
 
-double sf::Neuron::getGradient() const
+void sf::Neuron::setGradient(const double g, const ulong index)
 {
-    return this->gradient;
+    this->gradients[index] = g;
 }
 
-void sf::Neuron::setActivationFunctionType(sf::NeuronActivationFunctionType t)
+double sf::Neuron::getGradient(const ulong index) const
+{
+    return this->gradients[index];
+}
+
+void sf::Neuron::setActivationFunctionType(const sf::NeuronActivationFunctionType t)
 {
     this->activationType = t;
+    
+    switch (t)
+    {
+        case kNeuronActivationFunctionTypeSig:
+            if (this->gradients.size() != 1)
+            {
+                this->gradients.resize(1);
+            }
+            break;
+        case kNeuronActivationFunctionTypeConvolution:
+            break;
+    }
 }
 
-sf::NeuronActivationFunctionType sf::Neuron::getActivationFunctionType()
+sf::NeuronActivationFunctionType sf::Neuron::getActivationFunctionType() const
 {
     return this->activationType;
 }

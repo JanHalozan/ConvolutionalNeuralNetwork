@@ -10,15 +10,9 @@
 
 #include "poolinglayer.h"
 
-sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0), gradients(nullptr)
+sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), zeroPaddingSize(0)
 {
     this->type = kLayerTypeConvolutional;
-}
-
-sf::ConvolutionLayer::~ConvolutionLayer()
-{
-    if (this->gradients != nullptr)
-        delete[] this->gradients;
 }
 
 void sf::ConvolutionLayer::calculateOutput()
@@ -26,8 +20,8 @@ void sf::ConvolutionLayer::calculateOutput()
     assert_log(ceil((this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (width)");
     assert_log(ceil((this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (height)");
     
-    ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
-    ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
+    const ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
+    const ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
     
     if (!(this->outputWidth == oWidth && this->outputHeight == oHeight))
     {
@@ -89,11 +83,11 @@ void sf::ConvolutionLayer::calculateOutput()
 
 void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
-    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
-    if (this->gradients == nullptr)
-        this->gradients = new double[gradientsSize];
-    
-    memset(this->gradients, 0, gradientsSize * sizeof(double));
+//    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
+//    if (this->gradients == nullptr)
+//        this->gradients = new double[gradientsSize];
+//    
+//    memset(this->gradients, 0, gradientsSize * sizeof(double));
     
     auto kernelSize = this->kernelSide * this->kernelSide;
     auto outputSliceSize = this->outputWidth * this->outputHeight;
@@ -110,6 +104,7 @@ void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
                 double outGradient = 0.0;
                 auto &n = this->neurons->at(lyr);
                 
+                //Optimization from polling layer - polling rutes only the max gradient
                 if (gradient != 0.0)
                 {
                     auto &&weights = n.getWeights();
@@ -122,7 +117,7 @@ void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
                 }
                 
                 n.setGradient(outGradient);
-                this->gradients[index] = outGradient;
+//                this->gradients[index] = outGradient;
             }
         }
     }
@@ -137,11 +132,34 @@ void sf::ConvolutionLayer::reserveNeurons(ulong count)
     
     for (sf::Neuron &n : *this->neurons)
         n.randomizeWeights(inputCount);
+    
+    this->resolveGradientCapacity();
+}
+
+void sf::ConvolutionLayer::resolveGradientCapacity()
+{
+    const ulong oWidth = (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
+    const ulong oHeight = (this->inputHeight - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride + 1;
+    const ulong outputSize = this->outputWidth * this->outputHeight * this->outputDepth;
+    
+    if (!(this->outputWidth == oWidth && this->outputHeight == oHeight))
+    {
+        if (this->output != nullptr)
+            delete[] this->output;
+        
+        this->outputWidth = oWidth;
+        this->outputHeight = oHeight;
+        this->output = new double[outputSize];
+    }
+    
+    for (auto &n : *this->neurons)
+        n.reserveGradientItems(outputSize);
 }
 
 void sf::ConvolutionLayer::setStride(unsigned short stride)
 {
     this->stride = stride;
+    this->resolveGradientCapacity();
 }
 
 unsigned short sf::ConvolutionLayer::getStride() const
@@ -156,8 +174,10 @@ void sf::ConvolutionLayer::setKernelSideSize(unsigned short size)
     //+1 for the bias weight
     const ulong inputCount = this->kernelSide * this->kernelSide + 1;
     
-    for (sf::Neuron &n : *this->neurons)
+    for (auto &n : *this->neurons)
         n.randomizeWeights(inputCount);
+    
+    this->resolveGradientCapacity();
 }
 
 unsigned short sf::ConvolutionLayer::getKernelSideSize() const
@@ -168,6 +188,7 @@ unsigned short sf::ConvolutionLayer::getKernelSideSize() const
 void sf::ConvolutionLayer::setZeroPaddingSize(unsigned char size)
 {
     this->zeroPaddingSize = size;
+    this->resolveGradientCapacity();
 }
 
 unsigned char sf::ConvolutionLayer::getZeroPaddingSize() const
@@ -179,6 +200,7 @@ void sf::ConvolutionLayer::setOutputFeatureMapsCount(ulong count)
 {
     this->outputDepth = count;
     this->reserveNeurons(count);
+    this->resolveGradientCapacity();
 }
 
 ulong sf::ConvolutionLayer::getOutputFeatureMapsCount()
