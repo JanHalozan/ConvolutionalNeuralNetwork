@@ -95,7 +95,7 @@ void sf::Net::train()
                 ++layerOutputIt;
             }
             
-            for (auto layer : this->layers)
+            for (auto &layer : this->layers)
             {
                 layer->recalculateWeights();
             }
