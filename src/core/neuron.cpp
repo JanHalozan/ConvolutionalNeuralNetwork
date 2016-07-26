@@ -14,7 +14,7 @@ sf::Neuron::Neuron() : activationType(kNeuronActivationFunctionTypeSig), output(
 {
 }
 
-void sf::Neuron::randomizeWeights(long count)
+void sf::Neuron::randomizeWeights(const long count)
 {
 #ifndef DEBUG
     srand((unsigned)time(NULL));
@@ -22,12 +22,12 @@ void sf::Neuron::randomizeWeights(long count)
     
     for (long i = 0; i < count; ++i)
     {
-        double weight = (rand() / (double)RAND_MAX) - 0.5;
+        const double weight = (rand() / (double)RAND_MAX) - 0.5;
         this->weights.push_back(weight);
     }
 }
 
-double sf::Neuron::getWeight(ulong index) const
+double sf::Neuron::getWeight(const ulong index) const
 {
     return this->weights[index];
 }
@@ -106,7 +106,7 @@ void sf::Neuron::recalculateWeights()
     }
 }
 
-void sf::Neuron::setGradient(double g)
+void sf::Neuron::setGradient(const double g)
 {
     this->gradient = g;
 }
