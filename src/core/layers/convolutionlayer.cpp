@@ -81,6 +81,7 @@ void sf::ConvolutionLayer::calculateOutput()
     }
 }
 
+//TODO: Make this thing work!
 void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
 //    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
