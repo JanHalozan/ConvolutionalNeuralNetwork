@@ -84,7 +84,7 @@ double sf::Neuron::getOutput() const
     return this->output;
 }
 
-void sf::Neuron::recalculateWeights()
+void sf::Neuron::recalculateWeights(const ulong gradientIndex)
 {
     switch (this->activationType)
     {
@@ -96,12 +96,17 @@ void sf::Neuron::recalculateWeights()
             break;
         case kNeuronActivationFunctionTypeConvolution:
         {
-            const ulong kernelSide = this->weights.size() - 1;
             
-            for (ulong i = 0; i < this->inputs.size(); ++i)
-                this->weights[(i % kernelSide) + 1] += this->inputs[i] * this->getGradient();
+//            for (ulong i = 0; i < this->weights.size(); ++i)
+//                this->weights[i] += this->learningRate * this->getGradient(gradientIndex) * this->inputs[i];
             
-            this->weights[0] += this->getGradient() * kernelSide * kernelSide;
+            
+//            const ulong kernelSide = this->weights.size() - 1;
+//            
+//            for (ulong i = 0; i < this->inputs.size(); ++i)
+//                this->weights[(i % kernelSide) + 1] += this->inputs[i] * this->getGradient(i);
+//            
+//            this->weights[0] += this->getGradient() * kernelSide * kernelSide;
         }
             break;
     }

@@ -55,7 +55,7 @@ public:
     void setGradient(const double g, const ulong index = 0);
     double getGradient(const ulong index = 0) const;
     
-    void recalculateWeights();
+    void recalculateWeights(const ulong gradientIndex = 0);
     
     void setActivationFunctionType(const sf::NeuronActivationFunctionType t);
     sf::NeuronActivationFunctionType getActivationFunctionType() const;

@@ -62,7 +62,7 @@ public:
     virtual double *getOutput(ulong &width, ulong &height, ulong &depth) const;
 
     virtual void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) = 0;
-    void recalculateWeights();
+    virtual void recalculateWeights();
     
     virtual double getGradientOfNeuron(ulong neuronIndex) const;
     

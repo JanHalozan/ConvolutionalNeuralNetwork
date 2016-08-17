@@ -133,60 +133,60 @@ int main(int argc, char const *argv[])
 //    }
     
     
-//    //A really really really simple example of a MLP. Samples 1 & 2 are similar, so are 3 & 4 and 5 & 6. When the net is trained we feed it an example
-//    // similar to first two samples and if the answer is class 0 then the MLP is working correctly.
-//    {
-//        using namespace sf;
-//
-//        //Size of our input data
-//        const unsigned long inputWidth = 3;
-//        const unsigned long inputHeight = 1;
-//
-//        //A bunch of samples. The 1 & 2 are similar so are 3 & 4 and 5 & 6.
-//        double sample1[] = {1.0, 0.2, 0.1};     //Cow
-//        double sample2[] = {0.8, 0.1, 0.25};    //Cow
-//        double sample3[] = {0.2, 0.95, 0.1};    //Chicken
-//        double sample4[] = {0.11, 0.9, 0.13};   //Chicken
-//        double sample5[] = {0.0, 0.2, 0.91};    //Car
-//        double sample6[] = {0.21, 0.12, 1.0};   //Car
-//
-//        //A new network with the given data width and height
-//        Net *net = new Net(inputWidth, inputHeight);
-//        
-//        sf::LayerDescriptor descriptor;
-//        descriptor.type = kLayerTypeHiddenNeuron;
-//        descriptor.neuronCount = 4;
-//        
-//        net->addLayer(descriptor); //A hidden neural layer with 4 neurons
-//        net->addLayer(descriptor); //A hidden neural layer with 4 neurons
-//        
-//        descriptor.type = kLayerTypeOutputNeuron;
-//        
-//        net->addLayer(descriptor); //Finish it off by adding an output layer
-//        
-//        //Add all the samples with their corresponding labels
-//        net->addTrainingSample(sample1, "cow");
-//        net->addTrainingSample(sample2, "cow");
-//        net->addTrainingSample(sample3, "chicken");
-//        net->addTrainingSample(sample4, "chicken");
-//        net->addTrainingSample(sample5, "car");
-//        net->addTrainingSample(sample6, "car");
-//
-//        //And now we play the waiting game
-//        net->train();
-//
-//        //This example is similar to "chicken" so we expect the chicken probability to be close to 1 and car and cow to be close to 0
-//        double example[] = {0.1, 0.98, 0.01};
-//        auto output = net->classifySample(example);
-//
-//        //Let's see what we get
-//        for (auto &tuple : output)
-//            std::cout << std::get<1>(tuple) << ": " << std::get<0>(tuple) << std::endl;
-//
-//        std::cout << std::endl;
-//
-//        return 0;
-//    }
+    //A really really really simple example of a MLP. Samples 1 & 2 are similar, so are 3 & 4 and 5 & 6. When the net is trained we feed it an example
+    // similar to first two samples and if the answer is class 0 then the MLP is working correctly.
+    {
+        using namespace sf;
+
+        //Size of our input data
+        const unsigned long inputWidth = 3;
+        const unsigned long inputHeight = 1;
+
+        //A bunch of samples. The 1 & 2 are similar so are 3 & 4 and 5 & 6.
+        double sample1[] = {1.0, 0.2, 0.1};     //Cow
+        double sample2[] = {0.8, 0.1, 0.25};    //Cow
+        double sample3[] = {0.2, 0.95, 0.1};    //Chicken
+        double sample4[] = {0.11, 0.9, 0.13};   //Chicken
+        double sample5[] = {0.0, 0.2, 0.91};    //Car
+        double sample6[] = {0.21, 0.12, 1.0};   //Car
+
+        //A new network with the given data width and height
+        Net *net = new Net(inputWidth, inputHeight);
+        
+        sf::LayerDescriptor descriptor;
+        descriptor.type = kLayerTypeHiddenNeuron;
+        descriptor.neuronCount = 4;
+        
+        net->addLayer(descriptor); //A hidden neural layer with 4 neurons
+        net->addLayer(descriptor); //A hidden neural layer with 4 neurons
+        
+        descriptor.type = kLayerTypeOutputNeuron;
+        
+        net->addLayer(descriptor); //Finish it off by adding an output layer
+        
+        //Add all the samples with their corresponding labels
+        net->addTrainingSample(sample1, "cow");
+        net->addTrainingSample(sample2, "cow");
+        net->addTrainingSample(sample3, "chicken");
+        net->addTrainingSample(sample4, "chicken");
+        net->addTrainingSample(sample5, "car");
+        net->addTrainingSample(sample6, "car");
+
+        //And now we play the waiting game
+        net->train();
+
+        //This example is similar to "chicken" so we expect the chicken probability to be close to 1 and car and cow to be close to 0
+        double example[] = {0.1, 0.98, 0.01};
+        auto output = net->classifySample(example);
+
+        //Let's see what we get
+        for (auto &tuple : output)
+            std::cout << std::get<1>(tuple) << ": " << std::get<0>(tuple) << std::endl;
+
+        std::cout << std::endl;
+
+        return 0;
+    }
     
 //    {
 //        

@@ -31,6 +31,7 @@ public:
     
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
+    void recalculateWeights() override;
     
     void reserveNeurons(ulong count) override;
     
