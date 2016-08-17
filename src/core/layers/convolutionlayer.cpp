@@ -15,6 +15,11 @@ sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), ze
     this->type = kLayerTypeConvolutional;
 }
 
+sf::ConvolutionLayer::~ConvolutionLayer()
+{
+    
+}
+
 void sf::ConvolutionLayer::calculateOutput()
 {
     assert_log(ceil((this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride) == (this->inputWidth - this->kernelSide + 2 * this->zeroPaddingSize) / this->stride, "Invalid hyper parameters (width)");
