@@ -21,27 +21,25 @@ void sf::OutputNeuronLayer::setBackpropTargetNeuron(ulong index)
 
 void sf::OutputNeuronLayer::calculateOutput()
 {
-    assert_log(this->inputHeight == 1, "Output neuron layer must have an input height of 1.");
-    
     if (this->outputWidth != this->inputWidth)
     {
         if (this->output != nullptr)
             delete[] this->output;
         
-        this->outputWidth = this->inputWidth;
+        this->outputWidth = (ulong)this->neurons->size();
+        this->outputHeight = 1;
+        this->outputDepth = 1;
         this->output = new double[this->outputWidth];
     }
     
-    std::vector<double> input(this->inputWidth);
-    input.assign(this->input, this->input + this->inputWidth);
-    
     ulong i = 0;
+    const ulong inputSize = this->inputWidth * this->inputHeight * this->inputDepth;
+    std::vector<double> input(this->input, this->input + inputSize);
     
-    for (auto &n : *this->neurons)
+    for (sf::Neuron &n : *this->neurons)
     {
         n.loadInput(input);
         n.calculateOutput();
-        
         this->output[i++] = n.getOutput();
     }
 }
