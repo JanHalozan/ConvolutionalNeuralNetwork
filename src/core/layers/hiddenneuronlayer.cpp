@@ -20,13 +20,15 @@ void sf::HiddenNeuronLayer::calculateOutput()
         if (this->output != nullptr)
             delete[] this->output;
         
-        this->outputWidth = this->inputWidth;
-        this->outputHeight = this->inputHeight; //TODO: Support for 2D output
-        this->output = new double[this->outputWidth * this->outputHeight];
+        this->outputWidth = (ulong)this->neurons->size();
+        this->outputHeight = 1;
+        this->outputDepth = 1;
+        this->output = new double[this->outputWidth];
     }
     
     ulong i = 0;
-    std::vector<double> input(this->input, this->input + this->inputWidth);
+    const ulong inputSize = this->inputWidth * this->inputHeight * this->inputDepth;
+    std::vector<double> input(this->input, this->input + inputSize);
     
     for (sf::Neuron &n : *this->neurons)
     {
