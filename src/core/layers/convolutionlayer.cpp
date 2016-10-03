@@ -17,7 +17,6 @@ sf::ConvolutionLayer::ConvolutionLayer() : Layer(), stride(1), kernelSide(3), ze
 
 sf::ConvolutionLayer::~ConvolutionLayer()
 {
-    
 }
 
 void sf::ConvolutionLayer::calculateOutput()
@@ -172,6 +171,17 @@ void sf::ConvolutionLayer::reserveNeurons(ulong count)
         n.randomizeWeights(inputCount);
     
     this->resolveGradientCapacity();
+}
+
+double sf::ConvolutionLayer::getGradientOfNeuron(ulong neuronIndex) const
+{
+    const ulong sliceSize = this->outputWidth * this->outputHeight;
+    const ulong depthNeuron = neuronIndex / sliceSize; //Floors
+    neuronIndex -= depthNeuron * sliceSize;
+    
+    const auto &n = this->neurons->at(depthNeuron);
+    
+    return n.getGradient(neuronIndex);
 }
 
 void sf::ConvolutionLayer::resolveGradientCapacity()

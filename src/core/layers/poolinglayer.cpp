@@ -107,29 +107,48 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
     //Reset the entire gradient map
     memset(this->gradients, 0, totalInputSize * sizeof(double));
     
+    ulong i = 0; //Weight indexer
+    
     for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
     {
         for (ulong row = 0; row < this->outputHeight; ++row)
         {
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
-                //Convolutional layer only has one neuron
-                auto index = nextLayer->type == kLayerTypeConvolutional ? 0 : col + (row * this->outputWidth) + (lyr * outputSliceSize);
+                double gradient;
+                
+                if (nextLayer->type == kLayerTypeHiddenNeuron)
+                {
+                    double gradientSum = 0.0;
+
+                    for (const auto &nextLayerNeuron : nextLayer->getNeurons())
+                        gradientSum += nextLayerNeuron.getGradient() * nextLayerNeuron.getWeight(i + 1); //i + 1 because index 0 is the bias
+
+                    gradient = gradientSum;
+                }
+                else
+                {
+                    
+                    
+                    gradient = 0;
+                }
+                
+                auto index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
                 const auto routeIndex = this->selectedFilterIndexes[index];
                 
                 //Start index of the gradient frame
-                ulong gradientIndex = (col * this->stride) + (row * this->outputWidth * this->stride) + (lyr * inputSliceSize);
+                ulong gradientIndex = (col * this->stride) + (row * this->inputWidth * this->stride) + (lyr * inputSliceSize);
                 const ulong gradientCol = routeIndex % this->stride;
                 const ulong gradientRow = routeIndex / this->stride;
                 gradientIndex += gradientCol + (gradientRow * this->inputWidth);
                 
-                const auto sigmoidOutput = this->input[gradientIndex];
-                const auto gradient = nextLayer->neurons->at(index).getGradient() * sigmoidOutput * (1.0 - sigmoidOutput);
-                
                 this->gradients[gradientIndex] = gradient;
+                
+                i++;
             }
         }
     }
+    
 }
 
 double sf::PoolingLayer::getGradientOfNeuron(ulong neuronIndex) const

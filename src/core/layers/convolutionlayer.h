@@ -34,6 +34,7 @@ public:
     void recalculateWeights() override;
     
     void reserveNeurons(ulong count) override;
+    double getGradientOfNeuron(ulong neuronIndex) const override;
     
     void setStride(unsigned short stride);
     unsigned short getStride() const;
