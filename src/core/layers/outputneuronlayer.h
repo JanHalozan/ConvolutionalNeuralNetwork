@@ -28,6 +28,8 @@ public:
     
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
+    
+    double getGradientOfNeuron(ulong x, ulong y = 0, ulong z = 0) const override;
 };
 
 #endif /* outputneuronlayer_h */

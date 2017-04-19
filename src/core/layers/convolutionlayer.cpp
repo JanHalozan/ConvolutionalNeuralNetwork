@@ -85,64 +85,78 @@ void sf::ConvolutionLayer::calculateOutput()
     }
 }
 
-//TODO: Make this thing work!
 void sf::ConvolutionLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
 {
-//    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
-//    if (this->gradients == nullptr)
-//        this->gradients = new double[gradientsSize];
-//    
-//    memset(this->gradients, 0, gradientsSize * sizeof(double));
-    
-    auto kernelSize = this->kernelSide * this->kernelSide;
-    auto outputSliceSize = this->outputWidth * this->outputHeight;
-    
-    //TODO: Incorporate stride and other things?
     for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
     {
+        const auto &neuron = this->neurons->at(lyr);
         for (ulong row = 0; row < this->outputHeight; ++row)
         {
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
-                const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
-                auto &neuron = this->neurons->at(lyr);
+                double gradient = 0;
                 
-                //TODO: Here you must get gradients & weights in the next layer which used this neuron (actual in the 2D grid - not in code; code uses 1 neuron for entire slice) to calculate their output
-                const ulong matrixSize = 9; //Next layer size of matrix for covolution
-                const double *weights = nullptr; //TODO
-                const double *gradients = nullptr; //TODO
                 
-                double val = 0.0;
-                
-                for (ulong i = 0; i < matrixSize; ++i)
-                    val += gradients[i] * weights[matrixSize - 1 - i];
-                
-                const double outGradient = neuron.getOutput() * (1.0 - neuron.getOutput()) * val;
-                const ulong gradIndex = col + (row * this->outputWidth);
-                neuron.setGradient(outGradient, gradIndex);
-                
-//                const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
-//                const double gradient = nextLayer->getGradientOfNeuron(index);
-//                double outGradient = 0.0;
-//                auto &n = this->neurons->at(lyr);
-//                
-//                //Optimization from polling layer - polling rutes only the max gradient//NOT SURE YET, CHAIN RULE SHIT - check
-//                if (gradient != 0.0)
-//                {
-//                    auto &&weights = n.getWeights();
-//                    double val = 0.0;
-//                    
-//                    for (unsigned short i = 0; i < kernelSize; ++i)
-//                        val += weights[kernelSize - i - 1] * gradient;
-//                    
-//                    outGradient = n.getOutput() * (1.0 - n.getOutput()) * val;
-//                }
-//                
-//                n.setGradient(outGradient);
-////                this->gradients[index] = outGradient;
             }
         }
     }
+    
+    
+////    const ulong gradientsSize = this->outputWidth * this->outputHeight * this->outputDepth;
+////    if (this->gradients == nullptr)
+////        this->gradients = new double[gradientsSize];
+////    
+////    memset(this->gradients, 0, gradientsSize * sizeof(double));
+//    
+//    auto kernelSize = this->kernelSide * this->kernelSide;
+//    auto outputSliceSize = this->outputWidth * this->outputHeight;
+//    
+//    //TODO: Incorporate stride and other things?
+//    for (ulong lyr = 0; lyr < this->outputDepth; ++lyr)
+//    {
+//        for (ulong row = 0; row < this->outputHeight; ++row)
+//        {
+//            for (ulong col = 0; col < this->outputWidth; ++col)
+//            {
+//                const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
+//                auto &neuron = this->neurons->at(lyr);
+//                
+//                //TODO: Here you must get gradients & weights in the next layer which used this neuron (actual in the 2D grid - not in code; code uses 1 neuron for entire slice) to calculate their output
+//                const ulong matrixSize = 9; //Next layer size of matrix for covolution
+//                const double *weights = nullptr; //TODO
+//                const double *gradients = nullptr; //TODO
+//                
+//                double val = 0.0;
+//                
+//                for (ulong i = 0; i < matrixSize; ++i)
+//                    val += gradients[i] * weights[matrixSize - 1 - i];
+//                
+//                const double outGradient = neuron.getOutput() * (1.0 - neuron.getOutput()) * val;
+//                const ulong gradIndex = col + (row * this->outputWidth);
+//                neuron.setGradient(outGradient, gradIndex);
+//                
+////                const ulong index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
+////                const double gradient = nextLayer->getGradientOfNeuron(index); //REMOVED
+////                double outGradient = 0.0;
+////                auto &n = this->neurons->at(lyr);
+////                
+////                //Optimization from polling layer - polling rutes only the max gradient//NOT SURE YET, CHAIN RULE SHIT - check
+////                if (gradient != 0.0)
+////                {
+////                    auto &&weights = n.getWeights();
+////                    double val = 0.0;
+////                    
+////                    for (unsigned short i = 0; i < kernelSize; ++i)
+////                        val += weights[kernelSize - i - 1] * gradient;
+////                    
+////                    outGradient = n.getOutput() * (1.0 - n.getOutput()) * val;
+////                }
+////                
+////                n.setGradient(outGradient);
+//////                this->gradients[index] = outGradient;
+//            }
+//        }
+//    }
 }
 
 void sf::ConvolutionLayer::recalculateWeights()
@@ -173,15 +187,12 @@ void sf::ConvolutionLayer::reserveNeurons(ulong count)
     this->resolveGradientCapacity();
 }
 
-double sf::ConvolutionLayer::getGradientOfNeuron(ulong neuronIndex) const
+double sf::ConvolutionLayer::getGradientOfNeuron(ulong x, ulong y, ulong z) const
 {
-    const ulong sliceSize = this->outputWidth * this->outputHeight;
-    const ulong depthNeuron = neuronIndex / sliceSize; //Floors
-    neuronIndex -= depthNeuron * sliceSize;
+    const auto &neuron = this->neurons->at(z);
+    const ulong pos = x + this->outputWidth * y;
     
-    const auto &n = this->neurons->at(depthNeuron);
-    
-    return n.getGradient(neuronIndex);
+    return neuron.getGradient(pos);
 }
 
 void sf::ConvolutionLayer::resolveGradientCapacity()

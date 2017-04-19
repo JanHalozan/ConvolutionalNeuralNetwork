@@ -58,3 +58,8 @@ void sf::OutputNeuronLayer::backprop(sf::Layer *, sf::Layer *)
         ++i;
     }
 }
+
+double sf::OutputNeuronLayer::getGradientOfNeuron(ulong x, ulong y, ulong z) const
+{
+    return this->neurons->at(x + y + z).getGradient();
+}

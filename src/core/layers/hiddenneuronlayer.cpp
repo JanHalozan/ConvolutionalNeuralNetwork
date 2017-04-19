@@ -54,3 +54,8 @@ void sf::HiddenNeuronLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
         ++i;
     }
 }
+
+double sf::HiddenNeuronLayer::getGradientOfNeuron(ulong x, ulong y, ulong z) const
+{
+    return this->neurons->at(x + y + z).getGradient();
+}

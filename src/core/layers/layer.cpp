@@ -74,11 +74,6 @@ void sf::Layer::recalculateWeights()
         n.recalculateWeights();
 }
 
-double sf::Layer::getGradientOfNeuron(ulong neuronIndex) const
-{
-    return this->neurons->at(neuronIndex).getGradient();
-}
-
 void sf::Layer::setInputWidth(ulong w)
 {
     this->inputWidth = w;

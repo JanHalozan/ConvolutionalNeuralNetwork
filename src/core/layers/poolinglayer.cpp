@@ -8,6 +8,8 @@
 
 #include "poolinglayer.h"
 
+#include "convolutionlayer.h"
+
 sf::PoolingLayer::PoolingLayer() : Layer(), stride(2), gradients(nullptr)
 {
     this->type = sf::kLayerTypePooling;
@@ -115,6 +117,7 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
         {
             for (ulong col = 0; col < this->outputWidth; ++col)
             {
+                
                 double gradient;
                 
                 if (nextLayer->type == kLayerTypeHiddenNeuron)
@@ -128,9 +131,38 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
                 }
                 else
                 {
+                    const unsigned short kernelSideSize = ((sf::ConvolutionLayer *)nextLayer)->getKernelSideSize();
+                    const ulong width = nextLayer->getInputWidth();
+                    const ulong height = nextLayer->getInputHeight();
+                    double gradientSum = 0.0;
                     
+                    for (ulong z = 0; z < nextLayer->getInputDepth(); ++z)
+                    {
+                        for (ulong y = 0; y < height + 1; ++y)
+                        {
+                            for (short yy = y - kernelSideSize - 1; (ulong)yy < y + 1; ++yy)
+                            {
+                                if (yy < 0 || (ulong)yy > height - kernelSideSize - 1)
+                                    continue;
+                                
+                                for (ulong x = 0; x < width + 1; ++x)
+                                {
+                                    for (short xx = x - kernelSideSize - 1; (ulong)xx < x + 1; ++xx)
+                                    {
+                                        if (xx < 0 || (ulong)xx > width - kernelSideSize - 1)
+                                            continue;
+                                        
+                                        const ulong weightIndexX = xx % kernelSideSize;
+                                        const ulong weightIndexY = yy % kernelSideSize;
+                                        const auto &neuron = nextLayer->getNeurons().at(z);
+                                        gradientSum += nextLayer->getGradientOfNeuron(xx, yy, z) * neuron.getWeight(weightIndexX + weightIndexY * kernelSideSize);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     
-                    gradient = 0;
+                    gradient = gradientSum;
                 }
                 
                 auto index = col + (row * this->outputWidth) + (lyr * outputSliceSize);
@@ -148,10 +180,10 @@ void sf::PoolingLayer::backprop(sf::Layer *, sf::Layer *nextLayer)
             }
         }
     }
-    
 }
 
-double sf::PoolingLayer::getGradientOfNeuron(ulong neuronIndex) const
+double sf::PoolingLayer::getGradientOfNeuron(ulong x, ulong y, ulong z) const
 {
-    return this->gradients[neuronIndex];
+    const ulong index = x + y * this->outputWidth + z * this->outputWidth * this->outputHeight;
+    return this->gradients[index];
 }

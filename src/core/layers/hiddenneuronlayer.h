@@ -25,6 +25,8 @@ public:
     
     void calculateOutput() override;
     void backprop(sf::Layer *previousLayer, sf::Layer *nextLayer) override;
+    
+    double getGradientOfNeuron(ulong x, ulong y, ulong z) const override;
 };
 
 #endif /* hiddenneuronlayer_hpp */
